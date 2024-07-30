@@ -1,0 +1,34 @@
+import wixData from 'wix-data';
+import wixStores from 'wix-stores';
+
+
+$w.onReady(function () {
+    $w("#submitButton").onClick(async () => {
+        const formData = {
+            name: $w("#nameInput").value,
+            email: $w("#emailInput").value,
+            // добавьте другие поля формы, если нужно
+        };
+
+        const cart = await wixStores.cart.getCurrentCart();
+        formData.items = cart.lineItems.map(item => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price
+        }));
+
+        wixData.insert("FormSubmissions", formData)
+            .then(() => {
+                console.log("Data saved");
+                // Отправляем уведомление через Wix автоматизации
+                wixCRM.emailMarketing.sendEmail({
+                    to: formData.email,
+                    subject: "Thank you for your submission",
+                    body: `Thank you ${formData.name}, here is the summary of your cart items:\n\n${formData.items.map(item => `${item.name} - Quantity: ${item.quantity} - Price: ${item.price}`).join('\n')}`
+                });
+            })
+            .catch(err => {
+                console.log("Error saving data:", err);
+            });
+    });
+});
