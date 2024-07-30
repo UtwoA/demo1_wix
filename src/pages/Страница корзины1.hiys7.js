@@ -6,6 +6,10 @@ $w.onReady(function () {
     $w('#closeSecondFormButton').onClick(async() => {
         $w('#form15').hide();
     });
+
+    $w('#checkoutButton').onClick(async() => {
+        $w('#form14').scrollTo();
+    });
     // Обработчик нажатия на кнопку "Отправить форму" первой формы
     $w('#submitButton').onClick(async() => {
         // Получаем значения из полей первой формы
