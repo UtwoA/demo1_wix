@@ -3,7 +3,9 @@ import wixStores from 'wix-stores';
 import wixCRM from 'wix-crm';
 
 $w.onReady(function () {
-
+    $w('#closeSecondFormButton').onClick(async() => {
+        $w('#form15').hide();
+    });
     // Обработчик нажатия на кнопку "Отправить форму" первой формы
     $w('#submitButton').onClick(async() => {
         // Получаем значения из полей первой формы
