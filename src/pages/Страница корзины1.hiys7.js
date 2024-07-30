@@ -9,6 +9,7 @@ $w.onReady(function () {
     });
     // @ts-ignore
     $w('#closeSecondFormButton').onClick(async() => {
+        $w('#submitButton').show();
         $w('#form15').hide();
     });
 
@@ -49,7 +50,6 @@ $w.onReady(function () {
                 $w('#secondFormProductName').value = products;
 
             // Скрыть первую форму и показать вторую
-            $w('#form15').style.backgroundColor='000000';
             $w('#form15').show();
             $w('#submitButton').hide();
         } else {
