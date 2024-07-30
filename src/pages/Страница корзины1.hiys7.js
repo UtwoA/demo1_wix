@@ -27,7 +27,7 @@ $w.onReady(function () {
         };
         
         // Проверка, что поля не пустые
-        if (userPhone && userEmail) {
+        if (userPhone && userEmail && products) {
             // Заполняем вторую форму данными из первой формы
                 $w('#secondFormUserName').value = userName;
                 $w('#secondFormUserEmail').value = userEmail;
