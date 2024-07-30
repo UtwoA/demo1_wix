@@ -3,6 +3,7 @@ import wixStores from 'wix-stores';
 import wixCRM from 'wix-crm';
 
 $w.onReady(function () {
+    // @ts-ignore
     $w('#closeSecondFormButton').onClick(async() => {
         $w('#form15').hide();
     });
