@@ -51,6 +51,7 @@ $w.onReady(function () {
             // Скрыть первую форму и показать вторую
             $w('#form15').show();
             $w('#submitButton').hide();
+            $w('#form15').style.backgroundColor='000000';
         } else {
             // Если поля пустые, можно показать сообщение об ошибке
             console.log("Пожалуйста, заполните все поля.");
