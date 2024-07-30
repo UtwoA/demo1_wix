@@ -3,18 +3,7 @@ import wixStores from 'wix-stores';
 import wixCRM from 'wix-crm';
 
 $w.onReady(function () {
-    const button = $w('#submitButton');
-    const formContainer = $w('#form15');
 
-    if (button && formContainer) {
-        button.onClick(() => {
-            // Отображаем контейнер формы и центрируем его
-            formContainer.show();
-            centerElement(formContainer);
-        });
-    } else {
-        console.error('Элементы с идентификаторами #checkoutButton или #formContainer не найдены на странице');
-    }
     $w('#buttonContactUs').onClick(async() => {
         $w('#footer1').scrollTo();
     });
@@ -61,6 +50,7 @@ $w.onReady(function () {
 
             // Скрыть первую форму и показать вторую
             $w('#form15').show();
+            $w('#submitButton').hide();
         } else {
             // Если поля пустые, можно показать сообщение об ошибке
             console.log("Пожалуйста, заполните все поля.");
@@ -82,15 +72,3 @@ $w.onReady(function () {
         console.log("Данные второй формы отправлены:", userName, userEmail);
     });
 });
-function centerElement(element) {
-    const viewportHeight = $w('Window').height;
-    const viewportWidth = $w('Window').width;
-    const elementHeight = element.renderedHeight;
-    const elementWidth = element.renderedWidth;
-
-    const top = (viewportHeight - elementHeight) / 2;
-    const left = (viewportWidth - elementWidth) / 2;
-
-    element.style.top = `${top}px`;
-    element.style.left = `${left}px`;
-}
