@@ -3,6 +3,9 @@ import wixStores from 'wix-stores';
 import wixCRM from 'wix-crm';
 
 $w.onReady(function () {
+    $w('#buttonContactUs').onClick(async() => {
+        $w('#footer1').scrollTo();
+    });
     // @ts-ignore
     $w('#closeSecondFormButton').onClick(async() => {
         $w('#form15').hide();
