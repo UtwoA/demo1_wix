@@ -1,15 +1,12 @@
 import wixStores from 'wix-stores';
 
-// Запуск при загрузке страницы
 $w.onReady(async function () {
     await loadCart();
 
-    // Обработчики для других элементов
     $w('#buttonContactUs').onClick(async () => {
         $w('#footer1').scrollTo();
     });
 
-    // @ts-ignore
     $w('#closeSecondFormButton').onClick(async () => {
         $w('#submitButton').show();
         $w('#form15').hide();
@@ -19,7 +16,6 @@ $w.onReady(async function () {
         $w('#form14').scrollTo();
     });
 
-    // Обработчик нажатия на кнопку "Отправить форму" первой формы
     $w('#submitButton').onClick(async () => {
         let userName = $w('#inputName').value;
         let userEmail = $w('#inputEmail').value;
@@ -28,18 +24,8 @@ $w.onReady(async function () {
         let userMessage = $w('#inputMessage').value;
 
         let cart = await wixStores.cart.getCurrentCart();
-
         let products = cart.lineItems.map(item => item.name).join(', ');
 
-        let orderDetails = {
-            userName: userName,
-            userEmail: userEmail,
-            userLastName: userLastName,
-            userPhone: userPhone,
-            userMessage: userMessage,
-            productName: products
-        };
-        
         if (userPhone && userEmail && products) {
             $w('#secondFormUserName').value = userName;
             $w('#secondFormUserEmail').value = userEmail;
@@ -55,7 +41,6 @@ $w.onReady(async function () {
         }
     });
 
-    // Обработчик нажатия на кнопку "Отправить" второй формы
     $w('#button20').onClick(() => {
         let userName = $w('#secondFormUserName').value;
         let userLastName = $w('#secondFormUserLastName').value;
