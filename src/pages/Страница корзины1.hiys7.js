@@ -1,9 +1,9 @@
 import wixData from 'wix-data';
 import wixStores from 'wix-stores';
-import wixCRM from 'wix-crm';
+import { cart } from 'wix-stores';
 
 $w.onReady(function () {
-
+    loadCart();
     $w('#buttonContactUs').onClick(async() => {
         $w('#footer1').scrollTo();
     });
@@ -73,3 +73,37 @@ $w.onReady(function () {
         console.log("Данные второй формы отправлены:", userName, userEmail);
     });
 });
+function loadCart() {
+    cart.getCurrentCart()
+        .then((cartData) => {
+            $w('#cartRepeater').data = cartData.lineItems.map(item => ({
+                _id: item._id,
+                name: item.name,
+                price: item.priceData.totalPrice,
+                quantity: item.quantity,
+                image: item.mediaItems[0].src
+            }));
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+$w('#cartRepeater').onItemReady(($item, itemData) => {
+    $item('#productName').text = itemData.name;
+    $item('#productPrice').text = `$${itemData.price.formatted}`;
+    $item('#productImage').src = itemData.image;
+
+    $item('#removeFromCartButton').onClick(() => {
+        removeFromCart(itemData._id);
+    });
+});
+
+function removeFromCart(cartItemId) {
+    cart.removeProduct(cartItemId)
+        .then(() => {
+            loadCart();
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
