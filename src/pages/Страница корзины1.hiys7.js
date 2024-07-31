@@ -73,13 +73,16 @@ async function loadCart() {
         const cart = await wixStores.cart.getCurrentCart();
         console.log("Cart contents:", cart);
 
-        const cartItems = cart.lineItems.map(item => ({
-            _id: item.id, // use item.id
-            name: item.name || 'Неизвестный товар',
-            price: item.totalPrice ? `${item.totalPrice} ${cart.currency.symbol}` : 'Цена не указана',
-            quantity: item.quantity,
-            image: item.mediaItem ? item.mediaItem.src : 'https://via.placeholder.com/150'
-        }));
+        const cartItems = cart.lineItems.map(item => {
+            console.log("Cart item:", item); // Добавляем вывод для каждого товара
+            return {
+                _id: item.id,
+                name: item.name || 'Неизвестный товар',
+                price: item.totalPrice ? `${item.totalPrice} ${cart.currency.symbol}` : 'Цена не указана',
+                quantity: item.quantity,
+                image: item.mediaItem ? item.mediaItem.src : 'https://via.placeholder.com/150'
+            };
+        });
 
         console.log("Mapped cart items:", cartItems);
 
