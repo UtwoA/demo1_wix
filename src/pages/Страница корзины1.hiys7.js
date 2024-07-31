@@ -87,7 +87,7 @@ async function loadCart() {
         console.log("Картированные товары:", cartItems);
 
         $w('#repeater1').data = cartItems;
-        console.log("Данные переданы в повторитель");
+        console.log("Данные переданы в репитер");
         setupRepeaterItems();
     } catch (error) {
         console.error("Ошибка загрузки корзины:", error);
