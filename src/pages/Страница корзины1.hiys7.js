@@ -91,9 +91,10 @@ async function loadCart() {
 }
 
 function setupRepeaterItems(cartItems) {
-    $w('#repeater1').onReady(($item, itemData) => {
+    console.log("почалося");
+    $w('#repeater1').onItemReady(($item, itemData) => {
         console.log("Данные элемента:", itemData);
-
+        console.log("мегакрута");
         // Присвоение данных элементам репитера
         $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
