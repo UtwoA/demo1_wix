@@ -79,12 +79,13 @@ async function loadCart() {
         const cart = await wixStores.cart.getCurrentCart();
         console.log("Cart contents:", cart); // Проверьте содержимое корзины
         
+        // Обработка данных корзины
         const cartItems = cart.lineItems.map(item => ({
-            _id: item._id,
-            name: item.productName,
-            price: item.price.formatted,
+            _id: item._id, // Убедитесь, что это свойство доступно и правильно используется
+            name: item.name || 'Неизвестный товар', // Используйте корректное свойство
+            price: item.price.formatted || 'Цена не указана',
             quantity: item.quantity,
-            image: item.mediaItemUrl
+            image: item.mediaItem.url || 'URL изображения не указан'
         }));
 
         console.log("Mapped cart items:", cartItems); // Проверьте отформатированные данные
