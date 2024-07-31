@@ -1,24 +1,26 @@
-import wixData from 'wix-data';
 import wixStores from 'wix-stores';
-import wixWindow from 'wix-window';
 
-$w.onReady(function () {
-    loadCart();
-    $w('#buttonContactUs').onClick(async() => {
+// Запуск при загрузке страницы
+$w.onReady(async function () {
+    await loadCart();
+
+    // Обработчики для других элементов
+    $w('#buttonContactUs').onClick(async () => {
         $w('#footer1').scrollTo();
     });
+
     // @ts-ignore
-    $w('#closeSecondFormButton').onClick(async() => {
+    $w('#closeSecondFormButton').onClick(async () => {
         $w('#submitButton').show();
         $w('#form15').hide();
     });
 
-    $w('#checkoutButton').onClick(async() => {
+    $w('#checkoutButton').onClick(async () => {
         $w('#form14').scrollTo();
     });
+
     // Обработчик нажатия на кнопку "Отправить форму" первой формы
-    $w('#submitButton').onClick(async() => {
-        // Получаем значения из полей первой формы
+    $w('#submitButton').onClick(async () => {
         let userName = $w('#inputName').value;
         let userEmail = $w('#inputEmail').value;
         let userLastName = $w('#inputLastName').value;
@@ -38,38 +40,30 @@ $w.onReady(function () {
             productName: products
         };
         
-        // Проверка, что поля не пустые
         if (userPhone && userEmail && products) {
-            // Заполняем вторую форму данными из первой формы
-                $w('#secondFormUserName').value = userName;
-                $w('#secondFormUserEmail').value = userEmail;
-                $w('#secondFormUserLastName').value = userLastName;
-                $w('#secondFormUserPhone').value = userPhone;
-                $w('#secondFormUserMessage').value = userMessage;
+            $w('#secondFormUserName').value = userName;
+            $w('#secondFormUserEmail').value = userEmail;
+            $w('#secondFormUserLastName').value = userLastName;
+            $w('#secondFormUserPhone').value = userPhone;
+            $w('#secondFormUserMessage').value = userMessage;
+            $w('#secondFormProductName').value = products;
 
-                $w('#secondFormProductName').value = products;
-
-            // Скрыть первую форму и показать вторую
             $w('#form15').show();
             $w('#submitButton').hide();
         } else {
-            // Если поля пустые, можно показать сообщение об ошибке
             console.log("Пожалуйста, заполните все поля.");
         }
     });
 
     // Обработчик нажатия на кнопку "Отправить" второй формы
     $w('#button20').onClick(() => {
-        // Логика отправки данных второй формы
         let userName = $w('#secondFormUserName').value;
         let userLastName = $w('#secondFormUserLastName').value;
         let userPhone = $w('#secondFormUserPhone').value;
         let userEmail = $w('#secondFormUserEmail').value;
         let userMessage = $w('#secondFormUserMessage').value;
-
         let products = $w('#secondFormProductName').value;
 
-        // Здесь можно добавить логику для обработки данных второй формы
         console.log("Данные второй формы отправлены:", userName, userEmail);
     });
 });
@@ -77,19 +71,18 @@ $w.onReady(function () {
 async function loadCart() {
     try {
         const cart = await wixStores.cart.getCurrentCart();
-        console.log("Cart contents:", cart); // Проверьте содержимое корзины
+        console.log("Cart contents:", cart);
 
         const cartItems = cart.lineItems.map(item => ({
             _id: item._id,
-            name: item.productName || 'Неизвестный товар', // Используйте корректное поле
+            name: item.productName || 'Неизвестный товар',
             price: item.price.formatted || 'Цена не указана',
             quantity: item.quantity,
-            image: item.mediaItemUrl || 'https://via.placeholder.com/150' // Используйте корректное поле
+            image: item.mediaItemUrl || 'https://via.placeholder.com/150'
         }));
 
-        console.log("Mapped cart items:", cartItems); // Проверьте отформатированные данные
+        console.log("Mapped cart items:", cartItems);
 
-        // Устанавливаем данные в Repeater
         $w('#repeater1').data = cartItems;
         setupRepeaterItems();
     } catch (error) {
@@ -97,11 +90,10 @@ async function loadCart() {
     }
 }
 
-
 function setupRepeaterItems() {
     $w('#repeater1').forEachItem(($item, itemData) => {
-        console.log("ItemData:", itemData); // Проверьте данные для каждого элемента
-        
+        console.log("ItemData:", itemData);
+
         $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
         $item('#productImage').src = itemData.image;
@@ -117,18 +109,8 @@ function setupRepeaterItems() {
 async function removeFromCart(cartItemId) {
     try {
         await wixStores.cart.removeProduct(cartItemId);
-        loadCart(); // Перезагрузить корзину после удаления
+        await loadCart(); // Перезагрузить корзину после удаления
     } catch (error) {
         console.error("Error removing from cart:", error);
     }
 }
-
-$w('#repeater1').data = [
-    {
-        _id: "1",
-        name: "Test Product",
-        price: "$100",
-        quantity: 1,
-        image: "https://via.placeholder.com/150"
-    }
-];
