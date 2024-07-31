@@ -95,35 +95,18 @@ async function loadCart() {
 }
 
 function setupRepeaterItems() {
-    $w('#repeater1').forEachItem(($item, itemData) => {
+    $w('#repeater1').onItemReady(($item, itemData) => {
         console.log("Данные элемента:", itemData);
 
-        // Проверка наличия элемента
-        if ($item('#productName')) {
-            $item('#productName').text = itemData.name;
-        } else {
-            console.error("Элемент #productName не найден");
-        }
+        // Присвоение данных элементам репитера
+        $item('#productName').text = itemData.name;
+        $item('#productPrice').text = itemData.price;
+        $item('#productImage').src = itemData.image;
 
-        if ($item('#productPrice')) {
-            $item('#productPrice').text = itemData.price;
-        } else {
-            console.error("Элемент #productPrice не найден");
-        }
-
-        if ($item('#productImage')) {
-            $item('#productImage').src = itemData.image;
-        } else {
-            console.error("Элемент #productImage не найден");
-        }
-
-        if ($item('#removeFromCartButton')) {
-            $item('#removeFromCartButton').onClick(() => {
-                removeFromCart(itemData._id);
-            });
-        } else {
-            console.error("Элемент #removeFromCartButton не найден");
-        }
+        // Обработчик для кнопки удаления
+        $item('#removeFromCartButton').onClick(() => {
+            removeFromCart(itemData._id);
+        });
     });
 }
 
