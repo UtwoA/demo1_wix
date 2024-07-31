@@ -59,53 +59,47 @@ async function loadCart() {
         const cart = await wixStores.cart.getCurrentCart();
         console.log("Содержимое корзины:", cart);
 
-        if (!cart || !cart.lineItems || cart.lineItems.length === 0) {
-            console.log("Корзина пуста или данные не загружены.");
-            return;
-        }
-
-        const cartItems = cart.lineItems.map(item => {
-            console.log("Товар в корзине:", item);
-            return {
-                _id: item.id,
-                name: item.name || 'Неизвестный товар',
-                price: item.totalPrice ? `${item.totalPrice} ${cart.currency.symbol}` : 'Цена не указана',
-                quantity: item.quantity,
-                image: item.mediaItem ? item.mediaItem.src : 'https://via.placeholder.com/150'
-            };
-        });
+        const cartItems = cart.lineItems.map(item => ({
+            _id: item.id,
+            name: item.name || 'Неизвестный товар',
+            price: item.totalPrice ? `${item.totalPrice} ${cart.currency.symbol}` : 'Цена не указана',
+            quantity: item.quantity,
+            image: item.mediaItem ? item.mediaItem.src : 'https://via.placeholder.com/150'
+        }));
 
         console.log("Картированные товары:", cartItems);
 
-        if (cartItems.length === 0) {
+        if (cartItems.length > 0) {
+            $w('#repeater1').data = cartItems;
+            console.log("Данные переданы в репитер");
+            setupRepeaterItems(); // Убедитесь, что вызов функции верен
+        } else {
             console.log("Нет товаров для отображения.");
-            return;
         }
-
-        $w('#repeater1').data = cartItems;
-        console.log("Данные переданы в репитер");
-        setupRepeaterItems(cartItems);
     } catch (error) {
         console.error("Ошибка загрузки корзины:", error);
     }
 }
 
-function setupRepeaterItems(cartItems) {
-    console.log("почалося");
+
+function setupRepeaterItems() {
+    console.log('start');
     $w('#repeater1').onItemReady(($item, itemData) => {
         console.log("Данные элемента:", itemData);
-        console.log("мегакрута");
-        // Присвоение данных элементам репитера
+        console.log('really start');
+
         $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
         $item('#productImage').src = itemData.image;
-        console.log($item('#productPrice').text)
+
         // Обработчик для кнопки удаления
         $item('#removeFromCartButton').onClick(() => {
-            ///removeFromCart(itemData._id);
+            console.log("Кнопка удаления нажата для элемента с ID:", itemData._id);
+            removeFromCart(itemData._id);
         });
     });
 }
+
 
 // Функция для удаления товара из корзины
 async function removeFromCart(cartItemId) {
