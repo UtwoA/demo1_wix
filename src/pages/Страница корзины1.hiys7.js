@@ -3,16 +3,17 @@ import wixStores from 'wix-stores';
 $w.onReady(async function () {
     await loadCart();
 
-    $w('#buttonContactUs').onClick(async () => {
+    // Пример других обработчиков событий
+    $w('#buttonContactUs').onClick(() => {
         $w('#footer1').scrollTo();
     });
 
-    $w('#closeSecondFormButton').onClick(async () => {
+    $w('#closeSecondFormButton').onClick(() => {
         $w('#submitButton').show();
         $w('#form15').hide();
     });
 
-    $w('#checkoutButton').onClick(async () => {
+    $w('#checkoutButton').onClick(() => {
         $w('#form14').scrollTo();
     });
 
@@ -73,13 +74,13 @@ async function loadCart() {
 
         $w('#repeater1').data = cartItems;
         console.log("Данные переданы в репитер");
-        setupRepeaterItems();
+        setupRepeaterItems(cartItems);
     } catch (error) {
         console.error("Ошибка загрузки корзины:", error);
     }
 }
 
-function setupRepeaterItems() {
+function setupRepeaterItems(cartItems) {
     $w('#repeater1').onItemReady(($item, itemData) => {
         console.log("Данные элемента:", itemData);
 
