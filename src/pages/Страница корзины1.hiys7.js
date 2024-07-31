@@ -86,7 +86,7 @@ async function loadCart() {
         }));
 
         // Устанавливаем данные в Repeater
-        $w('#cartRepeater').data = cartItems;
+        $w('#repeater1').data = cartItems;
         setupRepeaterItems();
     } catch (error) {
         console.error("Error loading cart: ", error);
@@ -94,7 +94,7 @@ async function loadCart() {
 }
 
 function setupRepeaterItems() {
-    $w('#cartRepeater').onItemReady(($item, itemData) => {
+    $w('#repeater1').onItemReady(($item, itemData) => {
         $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
         $item('#productImage').src = itemData.image;
