@@ -91,7 +91,7 @@ function loadCart() {
         });
 }
 
-$w('#cartRepeater').onItemReady(($item, itemData) => {
+$w('#cartRepeater').onReady(($item, itemData) => {
     $item('#productName').text = itemData.name;
     $item('#productPrice').text = itemData.price;
     $item('#productImage').src = itemData.image;
