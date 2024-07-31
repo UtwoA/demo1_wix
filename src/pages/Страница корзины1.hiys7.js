@@ -72,7 +72,7 @@ async function loadCart() {
         if (cartItems.length > 0) {
             $w('#repeater1').data = cartItems;
             console.log("Данные переданы в репитер");
-            setupRepeaterItems(); // Убедитесь, что вызов функции верен
+            setupRepeaterItems(); // Убедитесь, что функция вызывается правильно
         } else {
             console.log("Нет товаров для отображения.");
         }
@@ -80,7 +80,6 @@ async function loadCart() {
         console.error("Ошибка загрузки корзины:", error);
     }
 }
-
 
 function setupRepeaterItems() {
     console.log('start');
@@ -99,7 +98,6 @@ function setupRepeaterItems() {
         });
     });
 }
-
 
 // Функция для удаления товара из корзины
 async function removeFromCart(cartItemId) {
