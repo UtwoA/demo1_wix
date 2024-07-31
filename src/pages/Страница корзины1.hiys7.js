@@ -77,32 +77,32 @@ $w.onReady(function () {
 async function loadCart() {
     try {
         const cart = await wixStores.cart.getCurrentCart();
-        console.log("Cart contents:", cart); // Проверка содержимого корзины
-        if (cart.lineItems.length === 0) {
-            console.log("Корзина пуста.");
-        } else {
-            console.log("Items in cart:", cart.lineItems);
-            const cartItems = cart.lineItems.map(item => ({
-                _id: item._id,
-                name: item.productName,
-                price: item.price.formatted,
-                quantity: item.quantity,
-                image: item.mediaItemUrl
-            }));
-            $w('#repeater1').data = cartItems;
-            setupRepeaterItems();
-        }
+        console.log("Cart contents:", cart); // Проверьте содержимое корзины
+        
+        const cartItems = cart.lineItems.map(item => ({
+            _id: item._id,
+            name: item.productName,
+            price: item.price.formatted,
+            quantity: item.quantity,
+            image: item.mediaItemUrl
+        }));
+
+        console.log("Mapped cart items:", cartItems); // Проверьте отформатированные данные
+
+        $w('#repeater1').data = cartItems;
+        setupRepeaterItems();
     } catch (error) {
         console.error("Error loading cart:", error);
     }
 }
 
+
 function setupRepeaterItems() {
-    $w('#repeater1').onItemReady(($item, itemData) => {
+    $w('#repeater1').forEachItem(($item, itemData) => {
+        console.log("ItemData:", itemData); // Проверьте данные для каждого элемента
         $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
         $item('#productImage').src = itemData.image;
-        $item('#productQuantity').value = itemData.quantity;
 
         $item('#removeFromCartButton').onClick(() => {
             removeFromCart(itemData._id);
@@ -115,7 +115,7 @@ async function removeFromCart(cartItemId) {
         await wixStores.cart.removeProduct(cartItemId);
         loadCart(); // Перезагрузить корзину после удаления
     } catch (error) {
-        console.error("Error removing from cart: ", error);
+        console.error("Error removing from cart:", error);
     }
 }
 
