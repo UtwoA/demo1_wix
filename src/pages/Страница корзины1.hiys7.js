@@ -95,7 +95,7 @@ function setupRepeaterItems(cartItems) {
         console.log("Данные элемента:", itemData);
 
         // Присвоение данных элементам репитера
-        $item('#productName').text = itemData.name;
+        $w('#productName').value = itemData.name;
         $item('#productPrice').text = itemData.price;
         $item('#productImage').src = itemData.image;
 
