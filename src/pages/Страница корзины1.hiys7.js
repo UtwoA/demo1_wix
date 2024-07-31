@@ -1,6 +1,6 @@
 import wixData from 'wix-data';
 import wixStores from 'wix-stores';
-import { cart } from 'wix-stores';
+import wixWindow from 'wix-window';
 
 $w.onReady(function () {
     loadCart();
@@ -73,27 +73,29 @@ $w.onReady(function () {
         console.log("Данные второй формы отправлены:", userName, userEmail);
     });
 });
+
 function loadCart() {
-    cart.getCurrentCart()
-        .then((cartData) => {
-            // Map cart data to match the repeater's item structure
-            const cartItems = cartData.lineItems.map(item => ({
+    wixStores.cart.getCurrentCart()
+        .then(cart => {
+            const cartItems = cart.lineItems.map(item => ({
                 _id: item._id,
-                name: item.name,
-                price: item.priceData.formattedTotalPrice,
+                name: item.productName,
+                price: item.price.formatted,
                 quantity: item.quantity,
-                image: item.mediaItem.mediaItemUrl
+                image: item.mediaItemUrl
             }));
             $w('#cartRepeater').data = cartItems;
         })
-        .catch((error) => {
-            console.error(error);
+        .catch(error => {
+            console.error("Error loading cart: ", error);
         });
 }
+
 $w('#cartRepeater').onItemReady(($item, itemData) => {
     $item('#productName').text = itemData.name;
     $item('#productPrice').text = itemData.price;
     $item('#productImage').src = itemData.image;
+    $item('#productQuantity').value = itemData.quantity;
 
     $item('#removeFromCartButton').onClick(() => {
         removeFromCart(itemData._id);
@@ -101,11 +103,11 @@ $w('#cartRepeater').onItemReady(($item, itemData) => {
 });
 
 function removeFromCart(cartItemId) {
-    cart.removeProduct(cartItemId)
+    wixStores.cart.removeProduct(cartItemId)
         .then(() => {
             loadCart();
         })
-        .catch((error) => {
-            console.error(error);
+        .catch(error => {
+            console.error("Error removing from cart: ", error);
         });
 }
