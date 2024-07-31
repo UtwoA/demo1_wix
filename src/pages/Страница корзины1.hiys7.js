@@ -97,9 +97,9 @@ function setupRepeaterItems() {
     $w('#repeater1').forEachItem(($item, itemData) => {
         console.log("ItemData:", itemData);
 
-        $item('#productName').text = $item.name;
+        $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
-        $item('#productImage').src = itemData.image;
+        $item('#productImage').src = $item.image;
         $item('#productQuantity').value = itemData.quantity;
 
         $item('#removeFromCartButton').onClick(() => {
