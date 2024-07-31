@@ -120,3 +120,12 @@ async function removeFromCart(cartItemId) {
     }
 }
 
+$w('#repeater1').data = [
+    {
+        _id: "1",
+        name: "Test Product",
+        price: "$100",
+        quantity: 1,
+        image: "https://via.placeholder.com/150"
+    }
+];
