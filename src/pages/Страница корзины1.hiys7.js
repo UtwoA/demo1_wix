@@ -77,19 +77,23 @@ $w.onReady(function () {
 async function loadCart() {
     try {
         const cart = await wixStores.cart.getCurrentCart();
-        const cartItems = cart.lineItems.map(item => ({
-            _id: item._id,
-            name: item.productName,
-            price: item.price.formatted,
-            quantity: item.quantity,
-            image: item.mediaItemUrl
-        }));
-
-        // Устанавливаем данные в Repeater
-        $w('#repeater1').data = cartItems;
-        setupRepeaterItems();
+        console.log("Cart contents:", cart); // Проверка содержимого корзины
+        if (cart.lineItems.length === 0) {
+            console.log("Корзина пуста.");
+        } else {
+            console.log("Items in cart:", cart.lineItems);
+            const cartItems = cart.lineItems.map(item => ({
+                _id: item._id,
+                name: item.productName,
+                price: item.price.formatted,
+                quantity: item.quantity,
+                image: item.mediaItemUrl
+            }));
+            $w('#repeater1').data = cartItems;
+            setupRepeaterItems();
+        }
     } catch (error) {
-        console.error("Error loading cart: ", error);
+        console.error("Error loading cart:", error);
     }
 }
 
