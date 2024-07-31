@@ -71,10 +71,10 @@ $w.onReady(async function () {
 async function loadCart() {
     try {
         const cart = await wixStores.cart.getCurrentCart();
-        console.log("Cart contents:", cart);
+        console.log("Содержимое корзины:", cart);
 
         const cartItems = cart.lineItems.map(item => {
-            console.log("Cart item:", item); // Добавляем вывод для каждого товара
+            console.log("Товар в корзине:", item);
             return {
                 _id: item.id,
                 name: item.name || 'Неизвестный товар',
@@ -84,22 +84,23 @@ async function loadCart() {
             };
         });
 
-        console.log("Mapped cart items:", cartItems);
+        console.log("Картированные товары:", cartItems);
 
         $w('#repeater1').data = cartItems;
+        console.log("Данные переданы в повторитель");
         setupRepeaterItems();
     } catch (error) {
-        console.error("Error loading cart:", error);
+        console.error("Ошибка загрузки корзины:", error);
     }
 }
 
 function setupRepeaterItems() {
     $w('#repeater1').forEachItem(($item, itemData) => {
-        console.log("ItemData:", itemData);
+        console.log("Данные элемента:", itemData);
 
         $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
-        $item('#productImage').src = $item.image;
+        $item('#productImage').src = itemData.image;
         $item('#productQuantity').value = itemData.quantity;
 
         $item('#removeFromCartButton').onClick(() => {
@@ -114,6 +115,6 @@ async function removeFromCart(cartItemId) {
         await wixStores.cart.removeProduct(cartItemId);
         await loadCart(); // Перезагрузить корзину после удаления
     } catch (error) {
-        console.error("Error removing from cart:", error);
+        console.error("Ошибка удаления из корзины:", error);
     }
 }
