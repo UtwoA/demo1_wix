@@ -90,7 +90,7 @@ function loadCart() {
             $w('#cartRepeater').data = cartItems;
             
             // Обработчик для каждого элемента в Repeater
-            $w('#cartRepeater').forEachItem(($item, itemData) => {
+            $w('#cartRepeater').onReady(($item, itemData) => {
                 $item('#productName').text = itemData.name;
                 $item('#productPrice').text = itemData.price;
                 $item('#productImage').src = itemData.image;
