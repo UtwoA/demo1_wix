@@ -76,13 +76,15 @@ $w.onReady(function () {
 function loadCart() {
     cart.getCurrentCart()
         .then((cartData) => {
-            $w('#cartRepeater').data = cartData.lineItems.map(item => ({
+            // Map cart data to match the repeater's item structure
+            const cartItems = cartData.lineItems.map(item => ({
                 _id: item._id,
                 name: item.name,
-                price: item.priceData.totalPrice,
+                price: item.priceData.formattedTotalPrice,
                 quantity: item.quantity,
-                image: item.mediaItems[0].src
+                image: item.mediaItem.mediaItemUrl
             }));
+            $w('#cartRepeater').data = cartItems;
         })
         .catch((error) => {
             console.error(error);
@@ -90,7 +92,7 @@ function loadCart() {
 }
 $w('#cartRepeater').onItemReady(($item, itemData) => {
     $item('#productName').text = itemData.name;
-    $item('#productPrice').text = `$${itemData.price.formatted}`;
+    $item('#productPrice').text = itemData.price;
     $item('#productImage').src = itemData.image;
 
     $item('#removeFromCartButton').onClick(() => {
