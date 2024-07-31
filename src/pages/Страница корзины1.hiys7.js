@@ -98,14 +98,32 @@ function setupRepeaterItems() {
     $w('#repeater1').forEachItem(($item, itemData) => {
         console.log("Данные элемента:", itemData);
 
-        $item('#productName').text = itemData.name;
-        $item('#productPrice').text = itemData.price;
-        $item('#productImage').src = itemData.image;
-        $item('#productQuantity').value = itemData.quantity;
+        // Проверка наличия элемента
+        if ($item('#productName')) {
+            $item('#productName').text = itemData.name;
+        } else {
+            console.error("Элемент #productName не найден");
+        }
 
-        $item('#removeFromCartButton').onClick(() => {
-            removeFromCart(itemData._id);
-        });
+        if ($item('#productPrice')) {
+            $item('#productPrice').text = itemData.price;
+        } else {
+            console.error("Элемент #productPrice не найден");
+        }
+
+        if ($item('#productImage')) {
+            $item('#productImage').src = itemData.image;
+        } else {
+            console.error("Элемент #productImage не найден");
+        }
+
+        if ($item('#removeFromCartButton')) {
+            $item('#removeFromCartButton').onClick(() => {
+                removeFromCart(itemData._id);
+            });
+        } else {
+            console.error("Элемент #removeFromCartButton не найден");
+        }
     });
 }
 
