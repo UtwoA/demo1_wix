@@ -95,10 +95,10 @@ function setupRepeaterItems(cartItems) {
         console.log("Данные элемента:", itemData);
 
         // Присвоение данных элементам репитера
-        $w('#productName').value = itemData.name;
+        $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
         $item('#productImage').src = itemData.image;
-
+        console.log($item('#productPrice').text)
         // Обработчик для кнопки удаления
         $item('#removeFromCartButton').onClick(() => {
             removeFromCart(itemData._id);
