@@ -102,7 +102,7 @@ function setupRepeaterItems(cartItems) {
         console.log($item('#productPrice').text)
         // Обработчик для кнопки удаления
         $item('#removeFromCartButton').onClick(() => {
-            removeFromCart(itemData._id);
+            ///removeFromCart(itemData._id);
         });
     });
 }
