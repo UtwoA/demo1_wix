@@ -74,43 +74,47 @@ $w.onReady(function () {
     });
 });
 
-function loadCart() {
-    wixStores.cart.getCurrentCart()
-        .then(cart => {
-            // Массив данных для Repeater
-            const cartItems = cart.lineItems.map(item => ({
-                _id: item._id,
-                name: item.productName,
-                price: item.price.formatted,
-                quantity: item.quantity,
-                image: item.mediaItemUrl
-            }));
+async function loadCart() {
+    try {
+        const cart = await wixStores.cart.getCurrentCart();
+        const cartItems = cart.lineItems.map(item => ({
+            _id: item._id,
+            name: item.productName,
+            price: item.price.formatted,
+            quantity: item.quantity,
+            image: item.mediaItemUrl
+        }));
 
-            // Устанавливаем данные в Repeater
-            $w('#cartRepeater').data = cartItems;
-            
-            // Обработчик для каждого элемента в Repeater
-            $w('#cartRepeater').onReady(function($item, itemData) => {
-                $item('#productName').text = itemData.name;
-                $item('#productPrice').text = itemData.price;
-                $item('#productImage').src = itemData.image;
-
-                $item('#removeFromCartButton').onClick(() => {
-                    removeFromCart(itemData._id);
-                });
-            });
-        })
-        .catch(error => {
-            console.error("Error loading cart: ", error);
-        });
+        // Устанавливаем данные в Repeater
+        $w('#cartRepeater').data = cartItems;
+    } catch (error) {
+        console.error("Error loading cart: ", error);
+    }
 }
 
-function removeFromCart(cartItemId) {
-    wixStores.cart.removeProduct(cartItemId)
-        .then(() => {
-            loadCart(); // Перезагрузить корзину после удаления
-        })
-        .catch(error => {
-            console.error("Error removing from cart: ", error);
+function setupRepeaterItems() {
+    $w('#cartRepeater').onItemReady(($item, itemData) => {
+        $item('#productName').text = itemData.name;
+        $item('#productPrice').text = itemData.price;
+        $item('#productImage').src = itemData.image;
+        $item('#productQuantity').value = itemData.quantity;
+
+        $item('#removeFromCartButton').onClick(() => {
+            removeFromCart(itemData._id);
         });
+
+        $item('#productQuantity').onChange((event) => {
+            updateCartQuantity(itemData._id, parseInt(event.target.value, 10));
+        });
+    });
 }
+// Функция для удаления товара из корзины
+async function removeFromCart(cartItemId) {
+    try {
+        await wixStores.cart.removeProduct(cartItemId);
+        loadCart(); // Перезагрузить корзину после удаления
+    } catch (error) {
+        console.error("Error removing from cart: ", error);
+    }
+}
+
