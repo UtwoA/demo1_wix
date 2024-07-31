@@ -77,6 +77,7 @@ $w.onReady(function () {
 function loadCart() {
     wixStores.cart.getCurrentCart()
         .then(cart => {
+            // Массив данных для Repeater
             const cartItems = cart.lineItems.map(item => ({
                 _id: item._id,
                 name: item.productName,
@@ -84,6 +85,8 @@ function loadCart() {
                 quantity: item.quantity,
                 image: item.mediaItemUrl
             }));
+
+            // Устанавливаем данные в Repeater
             $w('#cartRepeater').data = cartItems;
         })
         .catch(error => {
@@ -91,12 +94,15 @@ function loadCart() {
         });
 }
 
-$w('#cartRepeater').onReady(($item, itemData) => {
+
+$w('#cartRepeater').onItemReady(($item, itemData) => {
+    // Настройка элементов внутри Repeater
     $item('#productName').text = itemData.name;
     $item('#productPrice').text = itemData.price;
     $item('#productImage').src = itemData.image;
     $item('#productQuantity').value = itemData.quantity;
 
+    // Обработчик нажатия на кнопку удаления
     $item('#removeFromCartButton').onClick(() => {
         removeFromCart(itemData._id);
     });
