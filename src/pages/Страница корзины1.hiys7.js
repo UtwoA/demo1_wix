@@ -59,6 +59,11 @@ async function loadCart() {
         const cart = await wixStores.cart.getCurrentCart();
         console.log("Содержимое корзины:", cart);
 
+        if (!cart || !cart.lineItems || cart.lineItems.length === 0) {
+            console.log("Корзина пуста или данные не загружены.");
+            return;
+        }
+
         const cartItems = cart.lineItems.map(item => {
             console.log("Товар в корзине:", item);
             return {
@@ -71,6 +76,11 @@ async function loadCart() {
         });
 
         console.log("Картированные товары:", cartItems);
+
+        if (cartItems.length === 0) {
+            console.log("Нет товаров для отображения.");
+            return;
+        }
 
         $w('#repeater1').data = cartItems;
         console.log("Данные переданы в репитер");
