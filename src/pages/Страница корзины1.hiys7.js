@@ -91,7 +91,7 @@ async function loadCart() {
 }
 
 function setupRepeaterItems(cartItems) {
-    $w('#repeater1').onItemReady(($item, itemData) => {
+    $w('#repeater1').onReady(($item, itemData) => {
         console.log("Данные элемента:", itemData);
 
         // Присвоение данных элементам репитера
