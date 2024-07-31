@@ -87,6 +87,7 @@ async function loadCart() {
 
         // Устанавливаем данные в Repeater
         $w('#cartRepeater').data = cartItems;
+        setupRepeaterItems();
     } catch (error) {
         console.error("Error loading cart: ", error);
     }
@@ -101,10 +102,6 @@ function setupRepeaterItems() {
 
         $item('#removeFromCartButton').onClick(() => {
             removeFromCart(itemData._id);
-        });
-
-        $item('#productQuantity').onChange((event) => {
-            updateCartQuantity(itemData._id, parseInt(event.target.value, 10));
         });
     });
 }
