@@ -74,11 +74,11 @@ async function loadCart() {
         console.log("Cart contents:", cart);
 
         const cartItems = cart.lineItems.map(item => ({
-            _id: item._id,
-            name: item.productName || 'Неизвестный товар',
-            price: item.price.formatted || 'Цена не указана',
+            _id: item.id, // use item.id
+            name: item.name || 'Неизвестный товар',
+            price: item.totalPrice ? `${item.totalPrice} ${cart.currency.symbol}` : 'Цена не указана',
             quantity: item.quantity,
-            image: item.mediaItemUrl || 'https://via.placeholder.com/150'
+            image: item.mediaItem ? item.mediaItem.src : 'https://via.placeholder.com/150'
         }));
 
         console.log("Mapped cart items:", cartItems);
