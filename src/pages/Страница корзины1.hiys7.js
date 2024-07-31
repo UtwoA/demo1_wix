@@ -78,18 +78,18 @@ async function loadCart() {
     try {
         const cart = await wixStores.cart.getCurrentCart();
         console.log("Cart contents:", cart); // Проверьте содержимое корзины
-        
-        // Обработка данных корзины
+
         const cartItems = cart.lineItems.map(item => ({
-            _id: item._id, // Убедитесь, что это свойство доступно и правильно используется
-            name: item.name || 'Неизвестный товар', // Используйте корректное свойство
+            _id: item._id,
+            name: item.productName || 'Неизвестный товар', // Используйте корректное поле
             price: item.price.formatted || 'Цена не указана',
             quantity: item.quantity,
-            image: item.mediaItem.url || 'URL изображения не указан'
+            image: item.mediaItemUrl || 'https://via.placeholder.com/150' // Используйте корректное поле
         }));
 
         console.log("Mapped cart items:", cartItems); // Проверьте отформатированные данные
 
+        // Устанавливаем данные в Repeater
         $w('#repeater1').data = cartItems;
         setupRepeaterItems();
     } catch (error) {
@@ -101,15 +101,18 @@ async function loadCart() {
 function setupRepeaterItems() {
     $w('#repeater1').forEachItem(($item, itemData) => {
         console.log("ItemData:", itemData); // Проверьте данные для каждого элемента
+        
         $item('#productName').text = itemData.name;
         $item('#productPrice').text = itemData.price;
         $item('#productImage').src = itemData.image;
+        $item('#productQuantity').value = itemData.quantity;
 
         $item('#removeFromCartButton').onClick(() => {
             removeFromCart(itemData._id);
         });
     });
 }
+
 // Функция для удаления товара из корзины
 async function removeFromCart(cartItemId) {
     try {
