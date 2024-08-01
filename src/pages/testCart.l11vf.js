@@ -1,6 +1,7 @@
 import wixStores from 'wix-stores';
 
 $w.onReady(async function () {
+    $w('#loadingIndicator').hide();
     try {
         const cart = await wixStores.cart.getCurrentCart();
         if (!cart || !cart.lineItems) {
