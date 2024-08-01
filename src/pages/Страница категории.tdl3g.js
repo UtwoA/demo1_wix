@@ -4,8 +4,9 @@ $w.onReady(function () {
     $w('#buttonContactUs').onClick(async() => {
         $w('#footer1').scrollTo();
     });
-    $w('#button1').onClick(async() => {
-        console.log('find');
-    });
+    const elements = $w('#Страница категории.tdl3g.js').children; // Получение всех дочерних элементов страницы
+  elements.forEach(el => {
+    console.log(`Element: ${el.id}, Type: ${el.type}`);
+  });
 });
   
