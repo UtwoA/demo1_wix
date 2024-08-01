@@ -1,36 +1,31 @@
 import wixStores from 'wix-stores';
 
 $w.onReady(function () {
-    // Получение содержимого корзины при загрузке страницы
+    // Получение содержимого корзины
     wixStores.cart.getCurrentCart()
         .then((cart) => {
             const cartItems = cart.lineItems;
             console.log('Cart Items:', cartItems); // Отладка: вывод элементов корзины
 
             if (Array.isArray(cartItems) && cartItems.length > 0) {
-                // Установка данных в Repeater
                 $w('#repeater1').data = cartItems;
 
-                // Обновление элементов Repeater
-                $w('#repeater1').onItemReady(($item, itemData) => {
-                    console.log('Item Data in onItemReady:', itemData); // Отладка: вывод данных элемента Repeater
+                // Использование forEachItem для обработки элементов Repeater
+                $w('#repeater1').forEachItem(($item, itemData) => {
+                    console.log('Item Data in forEachItem:', itemData);
 
                     // Проверьте, что itemData содержит нужные поля и они правильно привязаны
                     if (itemData) {
-                        // Установка заголовка
                         $item('#itemTitle').text = itemData.name || 'No Name';
                         
-                        // Обработка изображения
                         if (itemData.mediaItem && itemData.mediaItem.src) {
                             $item('#itemImage').src = itemData.mediaItem.src;
                         } else {
                             $item('#itemImage').src = ''; // Путь по умолчанию, если нет изображения
                         }
 
-                        // Установка цены
                         $item('#itemPrice').text = `$${itemData.price || 0}`;
-                        
-                        // Обработка кнопки удаления
+
                         if ($item('#removeButton')) {
                             $item('#removeButton').onClick(() => {
                                 wixStores.cart.removeProducts([itemData.productId])
@@ -66,7 +61,7 @@ function updateCart() {
 
             if (Array.isArray(cartItems) && cartItems.length > 0) {
                 $w('#repeater1').data = cartItems;
-                $w('#repeater1').onItemReady(($item, itemData) => {
+                $w('#repeater1').forEachItem(($item, itemData) => {
                     console.log('Item Data in updateCart:', itemData);
 
                     if (itemData) {
