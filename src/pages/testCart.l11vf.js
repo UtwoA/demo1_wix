@@ -7,9 +7,9 @@ $w.onReady(function () {
             console.log('Cart Items:', cartItems);
 
             if (Array.isArray(cartItems) && cartItems.length > 0) {
-                // Установка данных в Repeater после инициализации
+                // Устанавливаем данные в Repeater
+
                 $w('#repeater1').data = cartItems.map(item => ({
-                    // Преобразуем каждый item в формат, подходящий для Repeater
                     _id: item.id,
                     name: item.name || 'No Name',
                     mediaItem: item.mediaItem ? item.mediaItem.src : '',
@@ -17,11 +17,12 @@ $w.onReady(function () {
                     quantity: item.quantity || 1,
                     totalPrice: item.totalPrice || 0
                 }));
-                console.log("$w('#repeater1').data:",$w('#repeater1').data);
-                // Обновление элементов Repeater
-                $w('#repeater1').onItemReady(($item, itemData) => {
-                    console.log('Item Data in onItemReady:', itemData);
 
+                // После установки данных обновляем элементы Repeater
+                $w('#repeater1').forEachItem(($item, itemData) => {
+                    console.log('Item Data in forEachItem:', itemData);
+
+                    // Устанавливаем значения для текущего элемента
                     $item('#itemTitle').text = itemData.name || 'No Name';
                     $item('#itemPrice').text = `$${itemData.price || 0}`;
                     $item('#itemQuantity').text = `Quantity: ${itemData.quantity || 1}`;
@@ -65,8 +66,7 @@ function updateCart() {
             console.log('Updated Cart Items:', cartItems);
 
             if (Array.isArray(cartItems) && cartItems.length > 0) {
-                // Обновляем Repeater с новыми данными
-                $w('#repeater1').data = cartItems.map(item => ({
+                const formattedItems = cartItems.map(item => ({
                     _id: item.id,
                     name: item.name || 'No Name',
                     mediaItem: item.mediaItem ? item.mediaItem.src : '',
@@ -74,6 +74,9 @@ function updateCart() {
                     quantity: item.quantity || 1,
                     totalPrice: item.totalPrice || 0
                 }));
+
+                // Обновляем данные Repeater
+                $w('#repeater1').data = formattedItems;
             } else {
                 $w('#repeater1').collapse();
             }
