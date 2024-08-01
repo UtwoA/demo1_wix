@@ -88,14 +88,16 @@ $w.onReady(async function () {
     }
 
     // Привязка данных к элементам Repeater
+    console.log('1');
     $w('#repeater1').onItemReady(($item, itemData) => {
+        console.log('2');
         $item('#productImage').src = itemData.product.image; // Изображение товара
         $item('#productName').text = 'TESTNAME'; // Название товара
         $item('#productPrice').text = `$${itemData.product.price}`; // Цена товара
 
         // Обработка удаления товара из корзины
         $item('#removeButton').onClick(() => {
-            wixStores.cart.removeProducts([itemData.product._id])
+            wixStores.cart.removeProduct([itemData.product._id])
                 .then(() => {
                     console.log('Товар удален из корзины');
                     updateCart(); // Обновление содержимого корзины
