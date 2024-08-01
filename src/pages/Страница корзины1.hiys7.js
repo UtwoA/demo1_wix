@@ -46,6 +46,7 @@ $w.onReady(async function () {
     try {
         const cart = await wixStores.cart.getCurrentCart();
         if (!cart || !cart.lineItems || (cart.lineItems.map.length == 0)) {
+            emptyCart();
             return;
         }
 
@@ -59,9 +60,6 @@ $w.onReady(async function () {
         }));
 
         $w('#repeater1').data = products;
-        if ($w('#totalPrice').text == 0){
-            emptyCart();
-        }
         $w('#repeater1').onItemReady(($item, itemData, index) => {
       
             $item('#itemTitle1').text = itemData.title;
