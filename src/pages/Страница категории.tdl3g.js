@@ -5,3 +5,7 @@ $w.onReady(function () {
         $w('#footer1').scrollTo();
     });
 });
+$w.onReady(function () {
+    console.log($w('#addToCartButton'));
+  });
+  

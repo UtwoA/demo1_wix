@@ -28,7 +28,7 @@ $w.onReady(async function () {
             $w('#repeater1').data = formattedItems;
 
             // Ручное обновление элементов Repeater после установки данных
-            updateRepeaterElements();
+            setTimeout(() => updateRepeaterElements(formattedItems), 500); // Задержка для асинхронного обновления
         } else {
             console.log('cartItems не является массивом или он пуст');
             $w('#repeater1').collapse();
@@ -38,30 +38,35 @@ $w.onReady(async function () {
     }
 });
 
-async function updateRepeaterElements() {
-    const items = $w('#repeater1').getItems(); // Получаем элементы Repeater
+// Функция для обновления данных в Repeater
+function updateRepeaterElements(items) {
+    const repeater = $w('#repeater1');
+    const totalItems = repeater.data.length;
 
-    for (let i = 0; i < items.length; i++) {
-        const itemData = items[i];
-        console.log('Updating item:', itemData);
+    for (let i = 0; i < totalItems; i++) {
+        const itemData = items[i]; // Получаем данные для текущего элемента
 
-        // Ручное обновление данных элемента
-        const itemElement = $w(`#item-${itemData._id}`); // Идентификатор элемента Repeater
+        // Получаем элемент Repeater по индексу
+        const $item = repeater.getItem(i);
 
-        if (itemElement) {
-            itemElement('#itemTitle').text = itemData.name || 'No Name';
-            itemElement('#itemPrice').text = `$${itemData.price || 0}`;
-            itemElement('#itemQuantity').text = `Quantity: ${itemData.quantity || 1}`;
-            itemElement('#itemTotalPrice').text = `$${itemData.totalPrice || 0}`;
+        if ($item) {
+            console.log('Updating item:', itemData);
+
+            // Обновляем элементы внутри Repeater
+            $item('#itemTitle').text = itemData.name || 'No Name';
+            $item('#itemPrice').text = `$${itemData.price || 0}`;
+            $item('#itemQuantity').text = `Quantity: ${itemData.quantity || 1}`;
+            $item('#itemTotalPrice').text = `$${itemData.totalPrice || 0}`;
 
             if (itemData.mediaItem) {
-                itemElement('#itemImage').src = itemData.mediaItem;
+                $item('#itemImage').src = itemData.mediaItem;
             } else {
-                itemElement('#itemImage').src = ''; // Путь по умолчанию, если нет изображения
+                $item('#itemImage').src = ''; // Путь по умолчанию, если нет изображения
             }
 
-            if (itemElement('#removeButton')) {
-                itemElement('#removeButton').onClick(() => {
+            // Если есть кнопка удаления
+            if ($item('#removeButton')) {
+                $item('#removeButton').onClick(() => {
                     console.log('Удалить товар с ID:', itemData._id);
                     wixStores.cart.removeProducts([itemData._id])
                         .then(() => {
@@ -96,7 +101,7 @@ async function updateCart() {
             $w('#repeater1').data = formattedItems;
 
             // Обновляем данные вручную
-            updateRepeaterElements();
+            setTimeout(() => updateRepeaterElements(formattedItems), 500); // Задержка для асинхронного обновления
         } else {
             $w('#repeater1').collapse();
         }
