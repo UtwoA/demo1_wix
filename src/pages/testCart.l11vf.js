@@ -1,3 +1,4 @@
+import { items } from 'wix-data.v2';
 import wixStores from 'wix-stores';
 
 $w.onReady(function () {
@@ -16,7 +17,7 @@ $w.onReady(function () {
 
                     // Проверьте, что itemData содержит нужные поля и они правильно привязаны
                     if (itemData) {
-                        $item('#itemTitle').text = itemData.name || 'No Name';
+                        $item('#itemTitle').text = $item.name || 'No Name';
                         
                         if (itemData.mediaItem && itemData.mediaItem.src) {
                             $item('#itemImage').src = itemData.mediaItem.src;
