@@ -106,9 +106,9 @@ $w.onReady(async function () {
         function emptyCart(){
             $w('#toProducts').show();
             $w('#emptyCartMessage').show();
-            $w('totalPrice').text = '';
-            $w('clearCartButton').hide();
-            $w('placeOrderButton').hide();
+            $w('#totalPrice').hide();
+            $w('#clearCartButton').hide();
+            $w('#placeOrderButton').hide();
         }
     }
     catch (err) {
