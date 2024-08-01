@@ -17,16 +17,16 @@ $w.onReady(function () {
                 }));
 
                 // Установка данных в Repeater
-                $w('#repeater1').data = formattedItems;
+                $w('#repeater52').data = formattedItems;
                 console.log('Formatted Data set to repeater:', formattedItems);
-                console.log("$w('#repeater1').data:",$w('#repeater1').data);
+                console.log("$w('#repeater52').data:",$w('#repeater52').data);
                 // Обновление элементов Repeater
-                $w('#repeater1').onItemReady(() => {
+                $w('#repeater52').onItemReady(() => {
                     updateRepeaterItems();
                 });
             } else {
                 console.log('Cart is empty or cartItems is not an array');
-                $w('#repeater1').collapse();
+                $w('#repeater52').collapse();
             }
         })
         .catch((err) => {
@@ -35,19 +35,19 @@ $w.onReady(function () {
 });
 
 function updateRepeaterItems() {
-    $w('#repeater1').forEachItem(($item, itemData) => {
+    $w('#repeater52').forEachItem(($item, itemData) => {
         console.log('Item Data in forEachItem:', itemData);
 
         if (itemData) {
-            $item('#itemTitle').text = itemData.name || 'No Name';
+            $item('#itemTitle52').text = itemData.name || 'No Name';
             
             if (itemData.mediaItem && itemData.mediaItem.src) {
-                $item('#itemImage').src = itemData.mediaItem.src;
+                $item('#itemImage52').src = itemData.mediaItem.src;
             } else {
-                $item('#itemImage').src = '';
+                $item('#itemImage52').src = '';
             }
 
-            $item('#itemPrice').text = `$${itemData.price || 0}`;
+            $item('#itemPrice52').text = `$${itemData.price || 0}`;
             
             // Пример кнопки удаления
             if ($item('#removeButton')) {
@@ -84,11 +84,11 @@ function updateCart() {
                     totalPrice: item.totalPrice || 0
                 }));
 
-                $w('#repeater1').data = formattedItems;
+                $w('#repeater52').data = formattedItems;
                 console.log('Formatted Data set to repeater after update:', formattedItems);
                 updateRepeaterItems();
             } else {
-                $w('#repeater1').collapse();
+                $w('#repeater52').collapse();
             }
         })
         .catch((err) => {
