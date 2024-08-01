@@ -1,3 +1,4 @@
+import { local } from 'wix-storage';
 import wixStores from 'wix-stores';
 
 $w.onReady(async function () {
@@ -30,8 +31,7 @@ $w.onReady(async function () {
             });
         });
         // Рассчитываем и отображаем общую стоимость
-        const totalPrice = products.reduce((total, item) => total + (item.price * item.quantity), 0);
-        $w('#totalPriceText').text = `Total Price: $${totalPrice.toFixed(2)}`;
+        updateTotalPrice(cart);
 
         // Обработчик кнопки очистки корзины
         $w('#clearCartButton').onClick(() => {
@@ -48,36 +48,31 @@ $w.onReady(async function () {
     }
 
   });
-  
-  // Функция для удаления товара из корзины
-async function removeItemFromCart(productId) {
-    try {
-        const cart = await wixStores.cart.getCurrentCart();
-        const lineItem = cart.lineItems.find(item => item.id == productId);
-
-        if (lineItem) {
-            await wixStores.cart.removeLineItems([lineItem.id]);
-            console.log('Item removed from cart');
-            $w.onReady();  // Перезагружаем данные корзины
-        }
-    } catch (err) {
-        console.error('Ошибка при удалении товара из корзины:', err);
+function updateTotalPrice(cartItems) {
+    let totalPrice = 0;
+    cartItems.forEach(item => {
+        totalPrice += item.productPrice;
+    });
+    $w('#totalPrice').text = totalPrice.toFixed(2);
+}
+  // Функция для получения товаров из корзины
+function getCart() {
+    let cart = local.getItem('cart');
+    if (!cart) {
+        return [];
     }
+    return JSON.parse(cart);
+}
+
+// Функция для удаления товара из корзины
+function removeFromCart(productId) {
+    let cart = getCart();
+    cart = cart.filter(item => item.productId !== productId);
+    local.setItem('cart', JSON.stringify(cart));
 }
 
 // Функция для очистки корзины
-async function clearCart() {
-    try {
-        const cart = await wixStores.cart.getCurrentCart();
-        const lineItems = cart.lineItems.map(item => item.id);
-
-        if (lineItems.length > 0) {
-            await wixStores.cart.removeLineItems(lineItems);
-            console.log('Cart cleared');
-            $w.onReady();  // Перезагружаем данные корзины
-        }
-    } catch (err) {
-        console.error('Ошибка при очистке корзины:', err);
-    }
+function clearCart() {
+    local.removeItem('cart');
 }
 
