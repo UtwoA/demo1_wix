@@ -92,9 +92,10 @@ $w.onReady(async function () {
                 updateTotalPrice([]);
             } finally {
                 $w('#loadingIndicator').hide();
+                $w('#toProducts').show();
+                $w('#emptyCartMessage').show();
             }
-            $w('#toProducts').show();
-            $w('#emptyCartMessage').show();
+
         });
 
         $w('#placeOrderButton').onClick(() => {
