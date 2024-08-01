@@ -14,7 +14,6 @@ $w.onReady(async function () {
 
             // Форматируем данные для Repeater
             $w('#repeater1').data = cartItems.map(item => ({
-                _id: item.id,
                 name: item.name || 'No Name',
                 mediaItem: item.mediaItem ? item.mediaItem.src : '',
                 price: item.price || 0,
