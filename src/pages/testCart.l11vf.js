@@ -1,13 +1,17 @@
 import wixStores from 'wix-stores';
-
 $w.onReady(function () {
     wixStores.cart.getCurrentCart()
         .then(cart => {
-            const cartItems = cart.lineItems;
-            console.log('Cart Items:', cartItems);
+            if (!cart || !cart.lineItems) {
+                console.log('Нет данных в корзине или структура корзины не правильная');
+                return;
+            }
 
-            if (Array.isArray(cartItems) && cartItems.length > 0) {
-                // Подготавливаем данные для Repeater
+            const cartItems = cart.lineItems;
+
+            if (Array.isArray(cartItems)) {
+                console.log('Cart Items:', cartItems);
+
                 const formattedItems = cartItems.map(item => ({
                     _id: item.id,
                     name: item.name || 'No Name',
@@ -17,33 +21,30 @@ $w.onReady(function () {
                     totalPrice: item.totalPrice || 0
                 }));
 
-                // Устанавливаем данные в Repeater
+                console.log('Formatted Items:', formattedItems);
+
                 $w('#repeater1').data = formattedItems;
 
-                // Получаем количество элементов в Repeater
-                const itemCount = $w('#repeater1').data.length;
+                // Проверяем количество элементов
+                $w('#repeater1').onReady(() => {
+                    const repeaterItems = $w('#repeater1').getItems();
+                    console.log('Items in Repeater:', repeaterItems);
 
-                // Устанавливаем данные для каждого элемента Repeater вручную
-                for (let i = 0; i < itemCount; i++) {
-                    const itemData = formattedItems[i];
-                    const $item = $w(`#repeater1 [data-item="${i}"]`); // Доступ к элементу через индекс
-
-                    if ($item) {
-                        // Обновляем значения для текущего элемента
-                        $item('#itemTitle').text = itemData.name || 'No Name';
-                        $item('#itemPrice').text = `$${itemData.price || 0}`;
-                        $item('#itemQuantity').text = `Quantity: ${itemData.quantity || 1}`;
-                        $item('#itemTotalPrice').text = `$${itemData.totalPrice || 0}`;
+                    repeaterItems.forEach((item, index) => {
+                        const itemData = formattedItems[index];
+                        item('#itemTitle').text = itemData.name || 'No Name';
+                        item('#itemPrice').text = `$${itemData.price || 0}`;
+                        item('#itemQuantity').text = `Quantity: ${itemData.quantity || 1}`;
+                        item('#itemTotalPrice').text = `$${itemData.totalPrice || 0}`;
 
                         if (itemData.mediaItem) {
-                            $item('#itemImage').src = itemData.mediaItem;
+                            item('#itemImage').src = itemData.mediaItem;
                         } else {
-                            $item('#itemImage').src = ''; // Путь по умолчанию, если нет изображения
+                            item('#itemImage').src = ''; // Путь по умолчанию, если нет изображения
                         }
 
-                        // Пример кнопки удаления
-                        if ($item('#removeButton')) {
-                            $item('#removeButton').onClick(() => {
+                        if (item('#removeButton')) {
+                            item('#removeButton').onClick(() => {
                                 console.log('Удалить товар с ID:', itemData._id);
                                 wixStores.cart.removeProducts([itemData._id])
                                     .then(() => {
@@ -55,10 +56,10 @@ $w.onReady(function () {
                                     });
                             });
                         }
-                    }
-                }
+                    });
+                });
             } else {
-                console.log('Корзина пуста или нет данных в cartItems');
+                console.log('cartItems не является массивом или он пуст');
                 $w('#repeater1').collapse();
             }
         })
@@ -71,9 +72,8 @@ function updateCart() {
     wixStores.cart.getCurrentCart()
         .then(cart => {
             const cartItems = cart.lineItems;
-            console.log('Updated Cart Items:', cartItems);
 
-            if (Array.isArray(cartItems) && cartItems.length > 0) {
+            if (Array.isArray(cartItems)) {
                 const formattedItems = cartItems.map(item => ({
                     _id: item.id,
                     name: item.name || 'No Name',
@@ -83,30 +83,25 @@ function updateCart() {
                     totalPrice: item.totalPrice || 0
                 }));
 
-                // Обновляем данные Repeater
                 $w('#repeater1').data = formattedItems;
 
-                // Обновляем элементы Repeater вручную
-                const itemCount = $w('#repeater1').data.length;
-
-                for (let i = 0; i < itemCount; i++) {
-                    const itemData = formattedItems[i];
-                    const $item = $w(`#repeater1 [data-item="${i}"]`);
-
-                    if ($item) {
-                        $item('#itemTitle').text = itemData.name || 'No Name';
-                        $item('#itemPrice').text = `$${itemData.price || 0}`;
-                        $item('#itemQuantity').text = `Quantity: ${itemData.quantity || 1}`;
-                        $item('#itemTotalPrice').text = `$${itemData.totalPrice || 0}`;
+                $w('#repeater1').onReady(() => {
+                    const repeaterItems = $w('#repeater1').getItems();
+                    repeaterItems.forEach((item, index) => {
+                        const itemData = formattedItems[index];
+                        item('#itemTitle').text = itemData.name || 'No Name';
+                        item('#itemPrice').text = `$${itemData.price || 0}`;
+                        item('#itemQuantity').text = `Quantity: ${itemData.quantity || 1}`;
+                        item('#itemTotalPrice').text = `$${itemData.totalPrice || 0}`;
 
                         if (itemData.mediaItem) {
-                            $item('#itemImage').src = itemData.mediaItem;
+                            item('#itemImage').src = itemData.mediaItem;
                         } else {
-                            $item('#itemImage').src = '';
+                            item('#itemImage').src = '';
                         }
 
-                        if ($item('#removeButton')) {
-                            $item('#removeButton').onClick(() => {
+                        if (item('#removeButton')) {
+                            item('#removeButton').onClick(() => {
                                 console.log('Удалить товар с ID:', itemData._id);
                                 wixStores.cart.removeProducts([itemData._id])
                                     .then(() => {
@@ -118,8 +113,8 @@ function updateCart() {
                                     });
                             });
                         }
-                    }
-                }
+                    });
+                });
             } else {
                 $w('#repeater1').collapse();
             }
