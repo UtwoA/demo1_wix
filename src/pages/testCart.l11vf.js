@@ -1,37 +1,29 @@
-import wixStores from 'wix-stores';
-
-$w.onReady(async function () {
-    try {
-        const cart = await wixStores.cart.getCurrentCart();
-        if (!cart || !cart.lineItems) {
-            console.log('Нет данных в корзине или структура корзины не правильная');
-            return;
-        }
-
-        const cartItems = cart.lineItems;
-        if (Array.isArray(cartItems) && cartItems.length > 0) {
-            console.log('Cart Items:', cartItems);
-
-            // Форматируем данные для Repeater
-            $w('#repeater1').data = cartItems.map(item => ({
-                name: item.name || 'No Name',
-                mediaItem: item.mediaItem ? item.mediaItem.src : '',
-                price: item.price || 0,
-                quantity: item.quantity || 1,
-                totalPrice: item.totalPrice || 0
-            }));
-
-            console.log('Formatted Items:', cartItems);
-            console.log('WE NEED THIS', $w('#repeater1').data);
-
-            // Устанавливаем данные в Repeater
-
-            // Ручное обновление элементов Repeater после установки данных
-        } else {
-            console.log('cartItems не является массивом или он пуст');
-            $w('#repeater1').collapse();
-        }
-    } catch (err) {
-        console.log('Ошибка при получении содержимого корзины:', err);
-    }
-});
+$w.onReady(function () {
+    // Данные, которые вы хотите отобразить
+    const products = [
+      {
+        _id: '1',
+        title: 'Product 1',
+        price: 29.99,
+        image: 'https://example.com/image1.jpg'
+      },
+      {
+        _id: '2',
+        title: 'Product 2',
+        price: 39.99,
+        image: 'https://example.com/image2.jpg'
+      }
+    ];
+  
+    // Назначьте данные в Repeater
+    $w('#repeater1').data = products;
+  
+    // Обработка каждого элемента Repeater
+    $w('#repeater1').onItemReady(($item, itemData, index) => {
+      // Присвойте значения элементам внутри Repeater
+      $item('#itemTitle1').text = itemData.title;
+      $item('#itemPrice1').text = `$${itemData.price.toFixed(2)}`;
+      $item('#itemImage1').src = itemData.image;
+    });
+  });
+  
