@@ -45,9 +45,9 @@ $w.onReady(async function () {
     $w('#loadingIndicator').hide();
     try {
         const cart = await wixStores.cart.getCurrentCart();
-        if (!cart || !cart.lineItems || (cart.lineItems.map.length == 0)) {
+        if (!cart || !cart.lineItems || (cart.lineItems.length == 0)) {
             emptyCart();
-            return;
+            
         }
 
         // Извлекаем и форматируем данные товаров
