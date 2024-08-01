@@ -1,16 +1,30 @@
 import wixStores from 'wix-stores';
 
-wixStores.cart.getCurrentCart()
-.then((cart) => {
-    const cartItems = cart.lineItems;
-    console.log(`Item data:`, cartItems);
-})
+$w.onReady(async function () {
+    try {
+        // Получаем данные корзины
+        const cart = await wixStores.cart.getCurrentCart();
+        if (!cart || !cart.lineItems) {
+            console.log('Нет данных в корзине или структура корзины не правильная');
+            return;
+        }
 
-$w.onReady(function () {
-    const products = [
-      { _id: '1', title: 'Product 1', price: 29.99, image: 'https://example.com/image1.jpg' },
-      { _id: '2', title: 'Product 2', price: 39.99, image: 'https://example.com/image2.jpg' }
-    ];
+        // Извлекаем и форматируем данные товаров
+        const products = cart.lineItems.map(item => ({
+            _id: item.id,
+            title: item.name || 'No Name',
+            price: item.price || 0,
+            image: item.mediaItem ? item.mediaItem.src : '' // Получаем URL изображения товара
+        }));
+
+        console.log('Formatted Products:', products);
+
+        // Вы можете использовать `products` как нужно, например, передать их в Repeater
+        // $w('#repeater1').data = products;
+
+    } catch (err) {
+        console.log('Ошибка при получении содержимого корзины:', err);
+    }
   
     $w('#repeater1').data = products;
   
