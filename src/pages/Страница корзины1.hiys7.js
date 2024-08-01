@@ -1,8 +1,9 @@
 import wixStores from 'wix-stores';
-import { getCart, removeFromCart, clearCart } from 'backend/cart.jsw';
-
+import wixData from 'wix-data';
 
 $w.onReady(async function () {
+
+    loadCartItems();
 
     // Пример других обработчиков событий
     $w('#buttonContactUs').onClick(() => {
@@ -53,25 +54,29 @@ $w.onReady(async function () {
 
         console.log("Данные второй формы отправлены:", userName, userEmail);
     });
-
-    const cart = getCart();
-    $w('#repeater1').data = cart;
-
-    $w('#repeater1').onItemReady(($item, itemData, index) => {
-        $item('#productName').text = itemData.productName;
-        $item('#productPrice').text = itemData.productPrice.toString();
-        $item('#productQuantity').text = itemData.quantity.toString();
-
-        $item('#removeFromCartButton').onClick(() => {
-            removeFromCart(itemData.productId);
-            $w('#repeater1').data = getCart();
-        });
-    });
-
-    $w('#clearCartButton').onClick(() => {
-        clearCart();
-        $w('#repeater1').data = [];
-    });
 });
 
+function loadCartItems() {
+    wixData.query('cart')
+        .find()
+        .then((results) => {
+            $w('#repeater1').data = results.items;
+            updateTotalPrice(results.items);
+        });
+}
 
+function updateTotalPrice(cartItems) {
+    let totalPrice = 0;
+    cartItems.forEach(item => {
+        totalPrice += item.productPrice * item.quantity;
+    });
+    $w('#totalPrice').text = totalPrice.toFixed(2);
+}
+
+export function removeFromCartButton_click(event) {
+    const itemId = event.context.item._id;
+    wixData.remove('cart', itemId)
+        .then(() => {
+            loadCartItems(); // Обновляем содержимое корзины после удаления товара
+        });
+}
