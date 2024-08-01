@@ -1,6 +1,4 @@
-import { local } from 'wix-storage';
 import wixStores from 'wix-stores';
-
 
 $w.onReady(async function () {
     try {
@@ -20,7 +18,7 @@ $w.onReady(async function () {
         }));
 
         $w('#repeater1').data = products;
-        
+
         $w('#repeater1').onItemReady(($item, itemData, index) => {
             console.log(`Item data:`, itemData); 
       
@@ -29,6 +27,7 @@ $w.onReady(async function () {
             $item('#itemImage1').src = itemData.image;
 
             $item('#removeItemButton').onClick(async () => {
+                $w('#loadingIndicator').show();
                 try {
                     await wixStores.cart.removeProduct(itemData.id);
                     const updatedData = $w('#repeater1').data.filter(product => product.id != itemData.id);
@@ -36,11 +35,14 @@ $w.onReady(async function () {
                     updateTotalPrice(updatedData);
                 } catch (err) {
                     console.log('Ошибка при удалении товара из корзины:', err);
+                } finally {
+                    $w('#loadingIndicator').hide();
                 }
             });
         });
 
         $w('#clearCartButton').onClick(async () => {
+            $w('#loadingIndicator').show();
             try {
                 for (let item of products) {
                     await wixStores.cart.removeProduct(item.id);
@@ -49,6 +51,8 @@ $w.onReady(async function () {
                 updateTotalPrice([]);
             } catch (err) {
                 console.log('Ошибка при очищении корзины:', err);
+            } finally {
+                $w('#loadingIndicator').hide();
             }
         });
 
