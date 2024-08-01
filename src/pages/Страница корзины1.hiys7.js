@@ -53,24 +53,24 @@ $w.onReady(async function () {
 
         console.log("Данные второй формы отправлены:", userName, userEmail);
     });
-    
-    const cart = getCart();
-    $w('#cartRepeater').data = cart;
 
-    $w('#cartRepeater').onItemReady(($item, itemData, index) => {
+    const cart = getCart();
+    $w('#repeater1').data = cart;
+
+    $w('#repeater1').onItemReady(($item, itemData, index) => {
         $item('#productName').text = itemData.productName;
         $item('#productPrice').text = itemData.productPrice.toString();
         $item('#productQuantity').text = itemData.quantity.toString();
 
-        $item('#removeButton').onClick(() => {
+        $item('#removeFromCartButton').onClick(() => {
             removeFromCart(itemData.productId);
-            $w('#cartRepeater').data = getCart();
+            $w('#repeater1').data = getCart();
         });
     });
 
     $w('#clearCartButton').onClick(() => {
         clearCart();
-        $w('#cartRepeater').data = [];
+        $w('#repeater1').data = [];
     });
 });
 
