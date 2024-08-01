@@ -12,15 +12,19 @@ $w.onReady(async function () {
         // Извлекаем и форматируем данные товаров
         const products = cart.lineItems.map(item => ({
             _id: item.id,
-            title: item.name || 'No Name',
-            price: item.price || 0,
+            title: item.name,
+            price: item.price,
             image: item.mediaItem ? item.mediaItem.src : '' // Получаем URL изображения товара
         }));
 
         console.log('Formatted Products:', products);
-
-        $w('#repeater1').data = products;
-  
+        const products1 = [
+            { _id: '1', title: 'Product 1', price: 29.99, image: 'https://example.com/image1.jpg' },
+            { _id: '2', title: 'Product 2', price: 39.99, image: 'https://example.com/image2.jpg' }
+          ];
+          console.log('INFormatted Products:', products1);
+        $w('#repeater1').data = products1;
+        
         $w('#repeater1').onItemReady(($item, itemData, index) => {
           console.log(`Item data:`, itemData); // Вывод данных элемента в консоль
       
