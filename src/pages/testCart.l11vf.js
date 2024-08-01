@@ -5,7 +5,8 @@ $w.onReady(function () {
     wixStores.cart.getCurrentCart()
         .then((cart) => {
             const cartItems = cart.lineItems;
-            console.log('Cart Items:', cartItems); // Отладка: вывод данных корзины
+            console.log('Cart:', cart); // Отладка: вывод всей корзины
+            console.log('Cart Items:', cartItems); // Отладка: вывод элементов корзины
 
             if (Array.isArray(cartItems) && cartItems.length > 0) {
                 console.log('Setting data to repeater');
@@ -26,27 +27,31 @@ $w.onReady(function () {
 // Обновление элементов Repeater напрямую
 function updateRepeaterItems() {
     $w('#repeater1').forEachItem(($item, itemData, index) => {
-        console.log('Updating item:', itemData); // Отладка: вывод данных элемента Repeater
+        console.log('Item Data in updateRepeaterItems:', itemData); // Отладка: вывод данных элемента Repeater
 
         // Проверьте, что itemData содержит нужные поля и они правильно привязаны
-        $item('#itemTitle').text = itemData.name || 'No Name';
-        if ($item('#itemImage')) {
-            $item('#itemImage').src = itemData.mediaItem ? itemData.mediaItem.src : '';
-        }
-        if ($item('#itemPrice')) {
-            $item('#itemPrice').text = `$${itemData.price || 0}`;
-        }
-        if ($item('#removeButton')) {
-            $item('#removeButton').onClick(() => {
-                wixStores.cart.removeProducts([itemData.productId])
-                    .then(() => {
-                        console.log('Товар удален из корзины');
-                        updateCart(); // Обновление содержимого корзины
-                    })
-                    .catch((err) => {
-                        console.log('Ошибка при удалении товара из корзины:', err);
-                    });
-            });
+        if (itemData) {
+            $item('#itemTitle').text = itemData.name || 'No Name';
+            if ($item('#itemImage')) {
+                $item('#itemImage').src = itemData.mediaItem ? itemData.mediaItem.src : '';
+            }
+            if ($item('#itemPrice')) {
+                $item('#itemPrice').text = `$${itemData.price || 0}`;
+            }
+            if ($item('#removeButton')) {
+                $item('#removeButton').onClick(() => {
+                    wixStores.cart.removeProducts([itemData.productId])
+                        .then(() => {
+                            console.log('Товар удален из корзины');
+                            updateCart(); // Обновление содержимого корзины
+                        })
+                        .catch((err) => {
+                            console.log('Ошибка при удалении товара из корзины:', err);
+                        });
+                });
+            }
+        } else {
+            console.log('itemData is undefined or null');
         }
     });
 }
