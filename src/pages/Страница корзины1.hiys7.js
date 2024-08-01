@@ -45,7 +45,7 @@ $w.onReady(async function () {
     $w('#loadingIndicator').hide();
     try {
         const cart = await wixStores.cart.getCurrentCart();
-        if (!cart || !cart.lineItems) {
+        if (!cart || !cart.lineItems || (cart.lineItems.map.length == 0)) {
             $w('#toProducts').show();
             $w('#emptyCartMessage').show();
             $w('totalPrice').hide();
