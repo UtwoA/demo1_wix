@@ -22,7 +22,7 @@ $w.onReady(function () {
                 // Установка данных в Repeater
                 $w('#repeater1').data = formattedItems;
                 console.log('Formatted Data set to repeater:', formattedItems); // Проверка данных перед установкой
-
+                console.log('Data in $w("#repeater1").data:', $w('#repeater1').data);
                 // Используем функцию для обновления элементов Repeater
                 updateRepeaterItems();
             } else {
