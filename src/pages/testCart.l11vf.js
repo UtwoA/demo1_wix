@@ -4,14 +4,15 @@ $w.onReady(function () {
     // Получение содержимого корзины при загрузке страницы
     wixStores.cart.getCurrentCart()
         .then((cart) => {
-            console.log('Cart:', cart); // Отладка: вывод всей корзины
             const cartItems = cart.lineItems;
-            console.log('Cart Items:', cartItems); // Отладка: вывод элементов корзины
+            console.log('Cart Items:', cartItems); // Отладка: вывод данных корзины
 
             if (Array.isArray(cartItems) && cartItems.length > 0) {
                 console.log('Setting data to repeater');
                 $w('#repeater1').data = cartItems;
-                $w('#repeater1').expand(); // Развернуть Repeater, если он свернут
+
+                // Обновление элементов Repeater
+                updateRepeaterItems(cartItems);
             } else {
                 console.log('Cart is empty or cartItems is not an array');
                 $w('#repeater1').collapse(); // Скрыть Repeater, если корзина пуста
@@ -20,11 +21,12 @@ $w.onReady(function () {
         .catch((err) => {
             console.log('Ошибка при получении содержимого корзины:', err);
         });
+});
 
-    // Привязка данных к элементам Repeater
-    $w('#repeater1').onItemReady(($item, itemData) => {
-        console.log('onItemReady called'); // Отладка: подтверждение вызова onItemReady
-        console.log('Item Data in onItemReady:', itemData); // Отладка: вывод данных элемента Repeater
+// Обновление элементов Repeater напрямую
+function updateRepeaterItems(cartItems) {
+    $w('#repeater1').forEachItem(($item, itemData, index) => {
+        console.log('Updating item:', itemData); // Отладка: вывод данных элемента Repeater
 
         // Убедитесь, что itemData содержит ожидаемые поля
         $item('#itemTitle').text = itemData.name || 'No Name';
@@ -47,7 +49,7 @@ $w.onReady(function () {
             });
         }
     });
-});
+}
 
 // Обновление интерфейса после изменения корзины
 function updateCart() {
@@ -58,6 +60,7 @@ function updateCart() {
 
             if (Array.isArray(cartItems) && cartItems.length > 0) {
                 $w('#repeater1').data = cartItems;
+                updateRepeaterItems(cartItems); // Обновляем элементы Repeater после изменения данных
             } else {
                 $w('#repeater1').collapse(); // Скрыть Repeater, если корзина пуста
             }
