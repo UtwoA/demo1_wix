@@ -88,6 +88,7 @@ $w.onReady(async function () {
                 $w('#repeater1').data = [];
                 updateTotalPrice([]);
             } finally {
+                $w('#loadingIndicator').hide();
                 emptyCart();
             }
 
