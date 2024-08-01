@@ -89,9 +89,9 @@ $w.onReady(async function () {
 
     // Привязка данных к элементам Repeater
     $w('#repeater1').onItemReady(($item, itemData) => {
-        $item('#repeaterCart').src = itemData.product.image; // Изображение товара
-        $item('#itemTitle').text = itemData.product.name; // Название товара
-        $item('#itemPrice').text = `$${itemData.product.price}`; // Цена товара
+        $item('#productImage').src = itemData.product.image; // Изображение товара
+        $item('#productName').text = itemData.product.name; // Название товара
+        $item('#productPrice').text = `$${itemData.product.price}`; // Цена товара
 
         // Обработка удаления товара из корзины
         $item('#removeButton').onClick(() => {
