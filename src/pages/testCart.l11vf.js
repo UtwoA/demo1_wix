@@ -5,8 +5,7 @@ $w.onReady(async function () {
     try {
         const cart = await wixStores.cart.getCurrentCart();
         if (!cart || !cart.lineItems) {
-            $w('#toProducts').show();
-            $w('#emptyCartMessage').show();
+            console.log('Нет данных в корзине или структура корзины не правильная');
             return;
         }
 
@@ -22,6 +21,7 @@ $w.onReady(async function () {
         $w('#repeater1').data = products;
 
         $w('#repeater1').onItemReady(($item, itemData, index) => {
+            console.log(`Item data:`, itemData); 
       
             $item('#itemTitle1').text = itemData.title;
             $item('#itemPrice1').text = `$${itemData.price.toFixed(2)}`;
@@ -35,6 +35,7 @@ $w.onReady(async function () {
                     $w('#repeater1').data = updatedData;
                     updateTotalPrice(updatedData);
                 } catch (err) {
+                    console.log('Ошибка при удалении товара из корзины:', err);
                 } finally {
                     $w('#loadingIndicator').hide();
                 }
@@ -49,20 +50,25 @@ $w.onReady(async function () {
                 }
                 $w('#repeater1').data = [];
                 updateTotalPrice([]);
+            } catch (err) {
+                console.log('Ошибка при очищении корзины:', err);
             } finally {
                 $w('#loadingIndicator').hide();
             }
         });
 
         $w('#placeOrderButton').onClick(() => {
-            $w('#form14').scrollTo();
+            //wixStores.cart.checkout();
         });
 
         function updateTotalPrice(data) {
             const totalPrice = data.reduce((acc, item) => acc + item.price, 0);
             $w('#totalPrice').text = `$${totalPrice.toFixed(2)}`;
         }
+
         updateTotalPrice(products);
+
+    } catch (err) {
+        console.log('Ошибка при получении содержимого корзины:', err);
     }
 });
-
