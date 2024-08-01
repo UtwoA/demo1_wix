@@ -57,6 +57,7 @@ $w.onReady(function () {
             console.log('Remove button does not exist');
         }
     });
+    console.log('BAD NEWS');
 
     // Обновление интерфейса после изменения корзины
     function updateCart() {
