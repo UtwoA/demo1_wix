@@ -52,5 +52,6 @@ $w.onReady(async function () {
 
         console.log("Данные второй формы отправлены:", userName, userEmail);
     });
+    
 });
 
