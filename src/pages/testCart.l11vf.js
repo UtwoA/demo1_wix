@@ -1,3 +1,5 @@
+import wixStores from 'wix-stores';
+wixStores.cart.showMiniCart();
 $w.onReady(function () {
     const products = [
       { _id: '1', title: 'Product 1', price: 29.99, image: 'https://example.com/image1.jpg' },
