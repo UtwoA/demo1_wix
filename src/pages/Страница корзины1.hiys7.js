@@ -48,6 +48,9 @@ $w.onReady(async function () {
         if (!cart || !cart.lineItems) {
             $w('#toProducts').show();
             $w('#emptyCartMessage').show();
+            $w('totalPrice').hide();
+            $w('clearCartButton').hide();
+            $w('placeOrderButton').hide();
             return;
         }
 
