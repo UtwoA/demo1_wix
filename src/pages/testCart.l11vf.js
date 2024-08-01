@@ -19,7 +19,7 @@ $w.onReady(function () {
                 // Установка данных в Repeater
                 $w('#repeater1').data = formattedItems;
                 console.log('Formatted Data set to repeater:', formattedItems);
-
+                console.log("$w('#repeater1').data:",$w('#repeater1').data);
                 // Обновление элементов Repeater
                 $w('#repeater1').onItemReady(() => {
                     updateRepeaterItems();
