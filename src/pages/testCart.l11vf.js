@@ -23,7 +23,7 @@ $w.onReady(function () {
         });
 
     // Привязка данных к элементам Repeater
-    $w('#repeater1').onItemReady(($item, itemData) => {
+    $w('#container1').onItemReady(($item, itemData) => {
         console.log('Item Data in onItemReady:', itemData); // Отладка: вывод данных элемента Repeater
 
         if (itemData.mediaItem) {
