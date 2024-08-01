@@ -93,6 +93,8 @@ $w.onReady(async function () {
             } finally {
                 $w('#loadingIndicator').hide();
             }
+            $w('#toProducts').show();
+            $w('#emptyCartMessage').show();
         });
 
         $w('#placeOrderButton').onClick(() => {
