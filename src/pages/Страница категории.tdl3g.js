@@ -4,8 +4,8 @@ $w.onReady(function () {
     $w('#buttonContactUs').onClick(async() => {
         $w('#footer1').scrollTo();
     });
+    $w('#addToCartButton').onClick(async() => {
+        console.log('find');
+    });
 });
-$w.onReady(function () {
-    console.log($w('#addToCartButton'));
-  });
   
