@@ -46,11 +46,6 @@ $w.onReady(async function () {
     try {
         const cart = await wixStores.cart.getCurrentCart();
         if (!cart || !cart.lineItems || (cart.lineItems.map.length == 0)) {
-            $w('#toProducts').show();
-            $w('#emptyCartMessage').show();
-            $w('totalPrice').hide();
-            $w('clearCartButton').hide();
-            $w('placeOrderButton').hide();
             return;
         }
 
@@ -64,7 +59,9 @@ $w.onReady(async function () {
         }));
 
         $w('#repeater1').data = products;
-
+        if ($w('#totalPrice').text == 0){
+            emptyCart();
+        }
         $w('#repeater1').onItemReady(($item, itemData, index) => {
       
             $item('#itemTitle1').text = itemData.title;
@@ -78,7 +75,6 @@ $w.onReady(async function () {
                     const updatedData = $w('#repeater1').data.filter(product => product.id != itemData.id);
                     $w('#repeater1').data = updatedData;
                     updateTotalPrice(updatedData);
-                } catch (err) {
                 } finally {
                     $w('#loadingIndicator').hide();
                 }
@@ -94,9 +90,7 @@ $w.onReady(async function () {
                 $w('#repeater1').data = [];
                 updateTotalPrice([]);
             } finally {
-                $w('#loadingIndicator').hide();
-                $w('#toProducts').show();
-                $w('#emptyCartMessage').show();
+                emptyCart();
             }
 
         });
@@ -110,6 +104,14 @@ $w.onReady(async function () {
             $w('#totalPrice').text = `$${totalPrice.toFixed(2)}`;
         }
         updateTotalPrice(products);
+
+        function emptyCart(){
+            $w('#toProducts').show();
+            $w('#emptyCartMessage').show();
+            $w('totalPrice').hide();
+            $w('clearCartButton').hide();
+            $w('placeOrderButton').hide();
+        }
     }
     catch (err) {
         console.log('Ошибка при получении содержимого корзины:', err);
