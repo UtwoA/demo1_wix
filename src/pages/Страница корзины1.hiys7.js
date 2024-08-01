@@ -46,8 +46,6 @@ $w.onReady(async function () {
     try {
         const cart = await wixStores.cart.getCurrentCart();
         if (!cart || !cart.lineItems) {
-            $w('toProducts').show();
-            $w('#emptyCartMessage').show();
             return;
         }
 
