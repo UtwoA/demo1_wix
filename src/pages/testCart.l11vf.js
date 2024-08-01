@@ -3,24 +3,18 @@ import wixStores from 'wix-stores';
 $w.onReady(function () {
     // Получение содержимого корзины при загрузке страницы
     wixStores.cart.getCurrentCart()
-        .then((cart) => {
-            const cartItems = cart.lineItems;
-            console.log('Cart Items:', cartItems); // Отладка: вывод элементов корзины
-
-            if (Array.isArray(cartItems) && cartItems.length > 0) {
-                console.log('Setting data to repeater');
-                $w('#repeater1').data = cartItems;
-
-                // Обновление элементов Repeater
-                updateRepeaterItems();
-            } else {
-                console.log('Cart is empty or cartItems is not an array');
-                $w('#repeater1').collapse(); // Скрыть Repeater, если корзина пуста
-            }
-        })
-        .catch((err) => {
-            console.log('Ошибка при получении содержимого корзины:', err);
+    .then((cart) => {
+        const cartItems = cart.lineItems;
+        console.log('Cart:', cart); // Отладка: вывод всей корзины
+        console.log('Cart Items:', cartItems); // Отладка: вывод элементов корзины
+        cartItems.forEach(item => {
+            console.log('Item:', item); // Отладка: вывод каждого элемента корзины
         });
+    })
+    .catch((err) => {
+        console.log('Ошибка при получении содержимого корзины:', err);
+    });
+
 });
 
 // Обновление элементов Repeater напрямую
