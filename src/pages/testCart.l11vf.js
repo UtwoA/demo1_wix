@@ -14,6 +14,7 @@ $w.onReady(function () {
 
                 // Установите данные в Repeater
                 $w('#repeater1').data = cartItems;
+                console.log($w('#repeater1').data);
             } else {
                 console.log('Cart is empty or cartItems is not an array');
                 $w('#repeater1').collapse(); // Скрыть Repeater, если корзина пуста
