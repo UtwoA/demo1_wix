@@ -12,7 +12,7 @@ $w.onReady(function () {
                 $w('#repeater1').data = cartItems;
 
                 // Обновление элементов Repeater
-                updateRepeaterItems(cartItems);
+                updateRepeaterItems();
             } else {
                 console.log('Cart is empty or cartItems is not an array');
                 $w('#repeater1').collapse(); // Скрыть Repeater, если корзина пуста
@@ -24,11 +24,11 @@ $w.onReady(function () {
 });
 
 // Обновление элементов Repeater напрямую
-function updateRepeaterItems(cartItems) {
+function updateRepeaterItems() {
     $w('#repeater1').forEachItem(($item, itemData, index) => {
         console.log('Updating item:', itemData); // Отладка: вывод данных элемента Repeater
 
-        // Убедитесь, что itemData содержит ожидаемые поля
+        // Проверьте, что itemData содержит нужные поля и они правильно привязаны
         $item('#itemTitle').text = itemData.name || 'No Name';
         if ($item('#itemImage')) {
             $item('#itemImage').src = itemData.mediaItem ? itemData.mediaItem.src : '';
@@ -60,7 +60,7 @@ function updateCart() {
 
             if (Array.isArray(cartItems) && cartItems.length > 0) {
                 $w('#repeater1').data = cartItems;
-                updateRepeaterItems(cartItems); // Обновляем элементы Repeater после изменения данных
+                updateRepeaterItems(); // Обновляем элементы Repeater после изменения данных
             } else {
                 $w('#repeater1').collapse(); // Скрыть Repeater, если корзина пуста
             }
