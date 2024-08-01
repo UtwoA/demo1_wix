@@ -3,7 +3,6 @@ import wixLocation from 'wix-location';
 
 $w.onReady(function () {
     // Получение содержимого корзины при загрузке страницы
-    updateCart();
     wixStores.cart.getCurrentCart()
         .then((cart) => {
             const cartItems = cart.lineItems;
@@ -23,7 +22,7 @@ $w.onReady(function () {
         });
 
     // Привязка данных к элементам Repeater
-    $w('#container1').onItemReady(($item, itemData) => {
+    $w('#repeater1').onItemReady(($item, itemData) => {
         console.log('Item Data in onItemReady:', itemData); // Отладка: вывод данных элемента Repeater
 
         if (itemData.mediaItem) {
@@ -31,9 +30,9 @@ $w.onReady(function () {
         } else {
             console.log('No mediaItem found');
         }
-        
+
         $item('#itemTitle').text = itemData.name || ''; // Установите название товара
-        //$item('#itemPrice').text = `$${itemData.price || 0}`; // Установите цену товара
+       // $item('#itemPrice').text = `$${itemData.price || 0}`; // Установите цену товара
 
         // Обработка удаления товара из корзины
         $item('#removeButton').onClick(() => {
@@ -66,3 +65,15 @@ $w.onReady(function () {
             });
     }
 });
+
+// Функция для оформления заказа
+export function checkout() {
+    wixStores.cart.checkout()
+        .then(() => {
+            console.log('Чек-аут успешен');
+            wixLocation.to('/checkout-success'); // Перенаправление на страницу подтверждения
+        })
+        .catch((err) => {
+            console.log('Ошибка при оформлении заказа:', err);
+        });
+}
