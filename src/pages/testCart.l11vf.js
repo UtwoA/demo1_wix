@@ -1,5 +1,4 @@
 import wixStores from 'wix-stores';
-import wixLocation from 'wix-location';
 
 $w.onReady(function () {
     // Получение содержимого корзины при загрузке страницы
@@ -28,15 +27,3 @@ $w.onReady(function () {
         $item('#itemTitle').text = itemData.name || ''; // Установите название товара
     });
 });
-
-// Функция для оформления заказа
-export function checkout() {
-    wixStores.cart.checkout()
-        .then(() => {
-            console.log('Чек-аут успешен');
-            wixLocation.to('/checkout-success'); // Перенаправление на страницу подтверждения
-        })
-        .catch((err) => {
-            console.log('Ошибка при оформлении заказа:', err);
-        });
-}
