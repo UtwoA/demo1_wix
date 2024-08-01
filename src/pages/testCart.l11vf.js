@@ -38,4 +38,5 @@ $w.onReady(async function () {
 
   function removeItemFromCart(id){
     local.removeItem(id);
+    console.log('deleted');
   }
