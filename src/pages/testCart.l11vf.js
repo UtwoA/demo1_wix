@@ -17,7 +17,7 @@ $w.onReady(function () {
                     quantity: item.quantity || 1,
                     totalPrice: item.totalPrice || 0
                 }));
-
+                console.log("$w('#repeater1').data:",$w('#repeater1').data);
                 // Обновление элементов Repeater
                 $w('#repeater1').onItemReady(($item, itemData) => {
                     console.log('Item Data in onItemReady:', itemData);
