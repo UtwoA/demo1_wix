@@ -96,6 +96,7 @@ $w.onReady(async function () {
 
         $w('#placeOrderButton').onClick(() => {
             $w('#form14').scrollTo();
+            $w('#Section1Regular').show();
         });
 
         function updateTotalPrice(data) {
