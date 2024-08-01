@@ -12,7 +12,7 @@ $w.onReady(function () {
                 $w('#repeater1').data = cartItems;
                 console.log('Data set to repeater:', $w('#repeater1').data); // Отладка: проверка установленных данных
 
-                // Обновление элементов Repeater
+                // Используем функцию для обновления элементов Repeater
                 updateRepeaterItems();
             } else {
                 console.log('Cart is empty or cartItems is not an array');
@@ -26,40 +26,33 @@ $w.onReady(function () {
 
 // Функция для обновления элементов Repeater
 function updateRepeaterItems() {
-    // Убедитесь, что данные установлены
-    const itemsCount = $w('#repeater1').data.length;
-    console.log('Number of items in repeater:', itemsCount);
+    $w('#repeater1').forEachItem(($item, itemData, index) => {
+        console.log('Item Data in forEachItem:', itemData);
 
-    if (itemsCount > 0) {
-        // Используем onItemReady
-        $w('#repeater1').onItemReady(($item, itemData) => {
-            console.log('Item Data in onItemReady:', itemData);
+        // Обновление элементов внутри Repeater
+        $item('#itemTitle').text = itemData.name || 'No Name';
+        
+        if (itemData.mediaItem && itemData.mediaItem.src) {
+            $item('#itemImage').src = itemData.mediaItem.src;
+        } else {
+            $item('#itemImage').src = ''; // Путь по умолчанию, если нет изображения
+        }
 
-            // Обновление элементов внутри Repeater
-            $item('#itemTitle').text = itemData.name || 'No Name';
+        $item('#itemPrice').text = `$${itemData.price || 0}`;
 
-            if (itemData.mediaItem && itemData.mediaItem.src) {
-                $item('#itemImage').src = itemData.mediaItem.src;
-            } else {
-                $item('#itemImage').src = ''; // Путь по умолчанию, если нет изображения
-            }
-
-            $item('#itemPrice').text = `$${itemData.price || 0}`;
-
-            if ($item('#removeButton')) {
-                $item('#removeButton').onClick(() => {
-                    wixStores.cart.removeProducts([itemData.productId])
-                        .then(() => {
-                            console.log('Товар удален из корзины');
-                            updateCart(); // Обновление содержимого корзины
-                        })
-                        .catch((err) => {
-                            console.log('Ошибка при удалении товара из корзины:', err);
-                        });
-                });
-            }
-        });
-    }
+        if ($item('#removeButton')) {
+            $item('#removeButton').onClick(() => {
+                wixStores.cart.removeProducts([itemData.productId])
+                    .then(() => {
+                        console.log('Товар удален из корзины');
+                        updateCart(); // Обновление содержимого корзины
+                    })
+                    .catch((err) => {
+                        console.log('Ошибка при удалении товара из корзины:', err);
+                    });
+            });
+        }
+    });
 }
 
 // Функция для обновления интерфейса после изменения корзины
