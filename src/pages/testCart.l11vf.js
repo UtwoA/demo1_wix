@@ -11,7 +11,6 @@ $w.onReady(async function () {
 
         // Извлекаем и форматируем данные товаров
         const products = cart.lineItems.map(s => ({
-            _id: '1231231231231',
             title: s.name,
             price: s.price,
             image: s.mediaItem ? s.mediaItem.src : '' // Получаем URL изображения товара
