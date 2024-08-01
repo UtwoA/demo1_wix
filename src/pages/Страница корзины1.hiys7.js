@@ -106,7 +106,7 @@ $w.onReady(async function () {
         function emptyCart(){
             $w('#toProducts').show();
             $w('#emptyCartMessage').show();
-            $w('totalPrice').hide();
+            $w('totalPrice').text = '';
             $w('clearCartButton').hide();
             $w('placeOrderButton').hide();
         }
