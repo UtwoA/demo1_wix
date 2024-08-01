@@ -3,6 +3,7 @@ import wixLocation from 'wix-location';
 
 $w.onReady(function () {
     // Получение содержимого корзины при загрузке страницы
+    updateCart();
     wixStores.cart.getCurrentCart()
         .then((cart) => {
             const cartItems = cart.lineItems;
