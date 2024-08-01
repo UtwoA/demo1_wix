@@ -1,5 +1,5 @@
 import { local } from 'wix-storage';
-import wixStores from 'wix-stores';
+import wixStores, { cart } from 'wix-stores';
 
 $w.onReady(async function () {
     try {
@@ -30,49 +30,12 @@ $w.onReady(async function () {
             removeItemFromCart(itemData._id);
             });
         });
-        // Рассчитываем и отображаем общую стоимость
-        updateTotalPrice(cart);
-
-        // Обработчик кнопки очистки корзины
-        $w('#clearCartButton').onClick(() => {
-            clearCart();
-        });
-
-        // Обработчик кнопки оформления заказа
-        $w('#checkoutButton').onClick(() => {
-            //scrollDown
-        });
 
     } catch (err) {
         console.log('Ошибка при получении содержимого корзины:', err);
     }
-
   });
-function updateTotalPrice(cartItems) {
-    let totalPrice = 0;
-    cartItems.forEach(item => {
-        totalPrice += item.productPrice;
-    });
-    $w('#totalPrice').text = totalPrice.toFixed(2);
-}
-  // Функция для получения товаров из корзины
-function getCart() {
-    let cart = local.getItem('cart');
-    if (!cart) {
-        return [];
-    }
-    return JSON.parse(cart);
-}
 
-// Функция для удаления товара из корзины
-function removeFromCart(productId) {
-    let cart = getCart();
-    cart = cart.filter(item => item.productId !== productId);
-    local.setItem('cart', JSON.stringify(cart));
-}
-
-// Функция для очистки корзины
-function clearCart() {
-    local.removeItem('cart');
-}
-
+  function removeItemFromCart(id){
+    local.removeItem(id);
+  }
