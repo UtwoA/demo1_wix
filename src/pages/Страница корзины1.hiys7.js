@@ -1,9 +1,7 @@
 import wixStores from 'wix-stores';
-import wixData from 'wix-data';
+import wixLocation from 'wix-location';
 
 $w.onReady(async function () {
-
-    loadCartItems();
 
     // Пример других обработчиков событий
     $w('#buttonContactUs').onClick(() => {
@@ -54,29 +52,58 @@ $w.onReady(async function () {
 
         console.log("Данные второй формы отправлены:", userName, userEmail);
     });
+    
+
+
+
+
+
+
+
+
+
+    console.log('CART');
+
+
+    // Получение содержимого корзины при загрузке страницы
+    wixStores.cart.getCurrentCart()
+        .then((cart) => {
+            const cartItems = cart.lineItems;
+            $w('#repeater1').data = cartItems;
+        })
+        .catch((err) => {
+            console.log('Ошибка при получении содержимого корзины:', err);
+        });
+    
+    // Обновление интерфейса после изменения корзины
+    function updateCart() {
+        wixStores.cart.getCurrentCart()
+            .then((cart) => {
+                const cartItems = cart.lineItems;
+                $w('#repeater1').data = cartItems;
+            })
+            .catch((err) => {
+                console.log('Ошибка при обновлении интерфейса корзины:', err);
+            });
+    }
+
+    // Привязка данных к элементам Repeater
+    $w('#repeater1').onItemReady(($item, itemData) => {
+        $item('#repeaterCart').src = itemData.product.image; // Изображение товара
+        $item('#itemTitle').text = itemData.product.name; // Название товара
+        $item('#itemPrice').text = `$${itemData.product.price}`; // Цена товара
+
+        // Обработка удаления товара из корзины
+        $item('#removeButton').onClick(() => {
+            wixStores.cart.removeProducts([itemData.product._id])
+                .then(() => {
+                    console.log('Товар удален из корзины');
+                    updateCart(); // Обновление содержимого корзины
+                })
+                .catch((err) => {
+                    console.log('Ошибка при удалении товара из корзины:', err);
+                });
+        });
+    });
 });
 
-function loadCartItems() {
-    wixData.query('cart')
-        .find()
-        .then((results) => {
-            $w('#repeater1').data = results.items;
-            updateTotalPrice(results.items);
-        });
-}
-
-function updateTotalPrice(cartItems) {
-    let totalPrice = 0;
-    cartItems.forEach(item => {
-        totalPrice += item.productPrice * item.quantity;
-    });
-    $w('#totalPrice').text = totalPrice.toFixed(2);
-}
-
-export function removeFromCartButton_click(event) {
-    const itemId = event.context.item._id;
-    wixData.remove('cart', itemId)
-        .then(() => {
-            loadCartItems(); // Обновляем содержимое корзины после удаления товара
-        });
-}
