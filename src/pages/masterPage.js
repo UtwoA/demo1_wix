@@ -1,8 +1,14 @@
-// API Reference: https://www.wix.com/velo/reference/api-overview/introduction
-// “Hello, World!” Example: https://learn-code.wix.com/en/article/hello-world
-
 $w.onReady(function () {
+    // Обработчик для кнопки переключения видимости формы
     $w('#buttonMap').onClick(() => {
-        $w('#googleMaps1').show();
+        toggleForm();
     });
 });
+
+function toggleForm() {
+    if ($w('#googleMaps1').isVisible()) {
+        $w('#googleMaps1').hide();
+    } else {
+        $w('#googleMaps1').show();
+    }
+}
