@@ -111,6 +111,10 @@ $w.onReady(async function () {
             $w('#totalPrice').hide();
             $w('#clearCartButton').hide();
             $w('#placeOrderButton').hide();
+            $w('#detailsOfOrder').hide();
+            $w('#line4').hide();
+            $w('#textOfSumm').hide();
+            $w('#textOfSafeOrder').hide();
         }
     }
     catch (err) {
