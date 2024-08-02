@@ -3,6 +3,11 @@
 
 $w.onReady(function () {
     $w('#buttonMap').onClick(() => {
-        $w('#googleMaps1').show();
+        if($w('#googleMaps1').isVisible()) {
+            $w('#googleMaps1').hide();
+        }
+        else{
+            $w('googleMaps1').show();
+        }
     });
 });
