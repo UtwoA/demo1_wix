@@ -13,5 +13,5 @@ $w.onReady(function () {
     });
     $w('#buttonContactUs').onClick(() => {
         $w('#footer1').scrollTo();
-    })
+    });
 });
