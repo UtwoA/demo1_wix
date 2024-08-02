@@ -10,6 +10,7 @@ $w.onReady(async function () {
         $w('#submitButton').show();
         $w('#form15').hide();
         $w('#secondForm').hide();
+        $w('#Section1Regular').collapse();
     });
     $w('#submitButton').onClick(async () => {
         let userName = $w('#inputName').value;
@@ -32,6 +33,7 @@ $w.onReady(async function () {
             $w('#form15').show();
             $w('#secondForm').show();
             $w('#submitButton').hide();
+            $w('#Section1Regular').expand();
         } 
     });
 
