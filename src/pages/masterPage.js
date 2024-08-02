@@ -11,4 +11,7 @@ $w.onReady(function () {
             $w('#googleMaps1').show();
         }
     });
+    $w('#buttonContactUs').onClick(() => {
+        $w('#footer1').scrollTo();
+    })
 });
