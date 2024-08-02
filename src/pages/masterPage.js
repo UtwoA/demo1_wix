@@ -7,7 +7,7 @@ $w.onReady(function () {
             $w('#googleMaps1').show();
         });
 })
-    $('googleMaps1').show(() => {
+    $w('googleMaps1').show(() => {
         $w('#buttonMap').onClick(() => {
             $w('#googleMaps1').hide();
         });
