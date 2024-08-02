@@ -9,6 +9,7 @@ $w.onReady(async function () {
     $w('#closeSecondFormButton').onClick(() => {
         $w('#submitButton').show();
         $w('#form15').hide();
+        $w('#secondForm').hide();
     });
     $w('#submitButton').onClick(async () => {
         let userName = $w('#inputName').value;
@@ -29,6 +30,7 @@ $w.onReady(async function () {
             $w('#secondFormProductName').value = products;
 
             $w('#form15').show();
+            $w('#secondForm').show();
             $w('#submitButton').hide();
         } 
     });
