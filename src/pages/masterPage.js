@@ -7,7 +7,7 @@ $w.onReady(function () {
             $w('#googleMaps1').hide();
         }
         else{
-            $w('googleMaps1').show();
+            $w('#googleMaps1').show();
         }
     });
 });
