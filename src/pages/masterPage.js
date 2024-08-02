@@ -2,7 +2,7 @@
 // “Hello, World!” Example: https://learn-code.wix.com/en/article/hello-world
 
 $w.onReady(function () {
-    $w('#buttonCart').onClick(() => {
+    $w('#buttonMap').onClick(() => {
         $w('#googleMaps1').show();
     });
 });
