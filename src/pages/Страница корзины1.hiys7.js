@@ -1,11 +1,6 @@
 import wixStores from 'wix-stores';
 $w.onReady(async function () {
 
-    // Пример других обработчиков событий
-    $w('#buttonContactUs').onClick(() => {
-        $w('#footer1').scrollTo();
-    });
-
     $w('#closeSecondFormButton').onClick(() => {
         $w('#submitButton').show();
         $w('#form15').hide();

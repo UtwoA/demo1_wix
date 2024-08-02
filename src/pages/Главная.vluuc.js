@@ -2,8 +2,5 @@
 // “Hello, World!” Example: https://learn-code.wix.com/en/article/hello-world
 
 $w.onReady(function () {
-    $w('#buttonContactUs').onClick(async() => {
-        $w('#footer1').scrollTo();
-    });
 
 });

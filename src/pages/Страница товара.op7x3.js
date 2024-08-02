@@ -1,6 +1,4 @@
 $w.onReady(function () {
-    $w('#buttonContactUs').onClick(async() => {
-        $w('#footer1').scrollTo();
-    });
+
 });
 
