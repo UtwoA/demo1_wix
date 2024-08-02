@@ -116,7 +116,9 @@ $w.onReady(async function () {
             $w('#detailsOfOrder').hide();
             $w('#line4').hide();
             $w('#textOfSumm').hide();
-            $w('#textOfSafeOrder').hide();
+            $w('#textOfSafeOrder').hide();           
+            $w('#Section1Regular').collapse();
+
         }
     }
     catch (err) {
