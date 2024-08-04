@@ -14,4 +14,8 @@ $w.onReady(function () {
     $w('#buttonContactUs').onClick(() => {
         $w('#footer1').scrollTo();
     });
+
+    $w('#image2').onClick(() => {
+        $w('#section7').scrollTo();
+    });
 });
