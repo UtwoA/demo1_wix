@@ -18,4 +18,7 @@ $w.onReady(function () {
     $w('#image2').onClick(() => {
         $w('#section7').scrollTo();
     });
+    $w('#image2').onClick(() => {
+        window.location.href = $w('#section7');
+    });
 });
