@@ -1,6 +1,3 @@
-import { geocode } from 'wix-location';
-//const apiKey = "AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA";
-
 const mapElementId = "googleMaps2";
 
 
@@ -24,71 +21,56 @@ $w.onReady(function () {
     });
 
     const address = "Ulitsa Sobornaya, Saratov, Saratov Oblast, Russia, 410002";
+    const apiKey = "AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA";
 
-    geocode(address)
-        .then((result) => {
-            if (result.length > 0) {
-                const location = result[0].location;
-                const lat = location.latitude;
-                const lng = location.longitude;
-
-                // Настройка карты
-                $w('#googleMaps2').location = {
-                    latitude: lat,
-                    longitude: lng
-                };
-                $w('#googleMaps2').markers = [{
-                    location: {
-                        latitude: lat,
-                        longitude: lng
-                    },
-                    title: 'My Marker',
-                    description: address
-                }];
+    getCoordinates(apiKey, address)
+        .then(location => {
+            if (location) {
+                setMapLocation(location.lat, location.lng);
             } else {
-                console.error('Geocode was not successful: no results found');
+                console.error('Geocoding failed');
             }
         })
-        .catch((error) => {
-            console.error('Geocode was not successful:', error);
-        });
+        .catch(err => console.error('Error:', err));
 
 });
 
 
-function loadGoogleMapsApi(apiKey) {
-    return new Promise((resolve, reject) => {
-        if (window.google && window.google.maps) {
-            resolve();
-        } else {
-            let script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-            script.async = true;
-            script.defer = true;
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
-        }
-    });
+function getCoordinates(apiKey, address) {
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+    return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'OK') {
+                const location = data.results[0].geometry.location;
+                return {
+                    lat: location.lat,
+                    lng: location.lng
+                };
+            } else {
+                console.error('Geocoding failed:', data.status);
+                return null;
+            }
+        })
+        .catch(err => {
+            console.error('Fetch error:', err);
+            return null;
+        });
 }
 
-function initMap() {
-    let geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ 'address': address }, function (results, status) {
-        if (status === 'OK') {
-            let mapOptions = {
-                zoom: 15,
-                center: results[0].geometry.location
-            };
-
-            let map = new google.maps.Map($w('#googleMap').$el, mapOptions);
-
-            let marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-        } else {
-            console.error('Geocode was not successful for the following reason: ' + status);
-        }
-    });
+function setMapLocation(lat, lng) {
+    const map = $w('#googleMaps2');
+    map.location = {
+        latitude: lat,
+        longitude: lng
+    };
+    map.markers = [{
+        location: {
+            latitude: lat,
+            longitude: lng
+        },
+        title: 'Selected Location',
+        description: 'This is the selected location'
+    }];
+    map.zoom = 15;
 }
