@@ -20,14 +20,14 @@ $w.onReady(function () {
     const apiKey = "AIzaSyCYh0q0b7UJV5MNMRO_8TwAdowQh8qFjtc";
 
     getCoordinates(apiKey, address)
-        .then(location => {
-            if (location) {
-                setMapLocation(location.lat, location.lng);
-            } else {
-                console.error('Geocoding failed');
-            }
-        })
-        .catch(err => console.error('Error:', err));
+    .then(location => {
+        if (location) {
+            setMapLocation(location.lat, location.lng);
+        } else {
+            console.error('Geocoding failed');
+        }
+    })
+    .catch(err => console.error('Error:', err));
 
 });
 
