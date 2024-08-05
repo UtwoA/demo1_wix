@@ -16,26 +16,25 @@ $w.onReady(function () {
         window.location.href = $w('#section7');
     });
 
-    //const address = "Ulitsa Sobornaya, Saratov, Saratov Oblast, Russia, 410002";
-    const address = "849VCWC8%2BR9";
     const apiKey = "AIzaSyCYh0q0b7UJV5MNMRO_8TwAdowQh8qFjtc";
 
+    const address = "Ulitsa Maksima Gor'kogo, д.16, Saratov, Saratov Oblast, Russia, 410028";
+
     getCoordinates(apiKey, address)
-    .then(location => {
-        if (location) {
-            setMapLocation(location.lat, location.lng);
-        } else {
-            console.error('Geocoding failed');
-        }
-    })
-    .catch(err => console.error('Error:', err));
+        .then(location => {
+            if (location) {
+                setMapLocation(location.lat, location.lng);
+            } else {
+                console.error('Geocoding failed');
+            }
+        })
+        .catch(err => console.error('Error:', err));
 
 });
 
 
 function getCoordinates(apiKey, address) {
-    //const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
     return fetch(url)
         .then(response => response.json())
         .then(data => {
