@@ -18,7 +18,7 @@ $w.onReady(function () {
 });
 const apiKey = "AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA";
 
-const mapElementId = "googleMaps1";
+const mapElementId = "googleMaps2";
 
 const address = "Ulitsa Sobornaya, Saratov, Saratov Oblast, Russia, 410002";
 
