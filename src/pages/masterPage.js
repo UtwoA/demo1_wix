@@ -15,20 +15,18 @@ $w.onReady(function () {
     $w('#image2').onClick(() => {
         window.location.href = $w('#section7');
     });
+    let script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA}&callback=initMap`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+    
 });
 const apiKey = "AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA";
 
 const mapElementId = "googleMaps2";
 
 const address = "Ulitsa Sobornaya, Saratov, Saratov Oblast, Russia, 410002";
-
-$w.onReady(function () {
-    let script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA}&callback=initMap`;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-});
 
 function initMap() {
     let geocoder = new google.maps.Geocoder();
