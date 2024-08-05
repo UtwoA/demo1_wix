@@ -13,7 +13,7 @@ $w.onReady(function () {
     });
 
     $w('#image2').onClick(() => {
-        $w('#section7').scrollTo();
+        window.location.href = $w('#section7');
     });
 });
 const apiKey = "AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA";
