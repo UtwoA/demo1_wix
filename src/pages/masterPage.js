@@ -17,7 +17,7 @@ $w.onReady(function () {
     });
 
     //const address = "Ulitsa Sobornaya, Saratov, Saratov Oblast, Russia, 410002";
-    const address = "9H38G2JP+HF";
+    const address = "849VCWC8%2BR9";
     const apiKey = "AIzaSyCYh0q0b7UJV5MNMRO_8TwAdowQh8qFjtc";
 
     getCoordinates(apiKey, address)
