@@ -1,7 +1,3 @@
-const mapElementId = "googleMaps2";
-
-
-
 $w.onReady(function () {
     $w('#googleMaps1').hide();
     $w('#buttonMap').onClick(() => {
@@ -21,7 +17,7 @@ $w.onReady(function () {
     });
 
     const address = "Ulitsa Sobornaya, Saratov, Saratov Oblast, Russia, 410002";
-    const apiKey = "AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA";
+    const apiKey = "AIzaSyCYh0q0b7UJV5MNMRO_8TwAdowQh8qFjtc";
 
     getCoordinates(apiKey, address)
         .then(location => {
