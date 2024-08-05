@@ -34,7 +34,8 @@ $w.onReady(function () {
 
 
 function getCoordinates(apiKey, address) {
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+    //const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&sensor=true`;
     return fetch(url)
         .then(response => response.json())
         .then(data => {
