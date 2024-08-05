@@ -1,8 +1,9 @@
-const apiKey = "AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA";
+import { geocode } from 'wix-location';
+//const apiKey = "AIzaSyCFyaPOSCk9Yd1ZpSiA4P93ZTSC3WRdwXA";
 
 const mapElementId = "googleMaps2";
 
-const address = "Ulitsa Sobornaya, Saratov, Saratov Oblast, Russia, 410002";
+
 
 $w.onReady(function () {
     $w('#googleMaps1').hide();
@@ -22,12 +23,35 @@ $w.onReady(function () {
         window.location.href = $w('#section7');
     });
 
+    const address = "Ulitsa Sobornaya, Saratov, Saratov Oblast, Russia, 410002";
 
-    loadGoogleMapsApi(apiKey).then(() => {
-        initMap();
-    }).catch((err) => {
-        console.error('Failed to load Google Maps API:', err);
-    });
+    geocode(address)
+        .then((result) => {
+            if (result.length > 0) {
+                const location = result[0].location;
+                const lat = location.latitude;
+                const lng = location.longitude;
+
+                // Настройка карты
+                $w('#googleMaps2').location = {
+                    latitude: lat,
+                    longitude: lng
+                };
+                $w('#googleMaps2').markers = [{
+                    location: {
+                        latitude: lat,
+                        longitude: lng
+                    },
+                    title: 'My Marker',
+                    description: address
+                }];
+            } else {
+                console.error('Geocode was not successful: no results found');
+            }
+        })
+        .catch((error) => {
+            console.error('Geocode was not successful:', error);
+        });
 
 });
 
